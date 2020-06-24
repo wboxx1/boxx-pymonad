@@ -23,17 +23,25 @@ Nothing. In this case, we need to override those constructors as well:
 """
 import pymonad.monad
 
+
 class MonadOperators(pymonad.monad.MonadAlias):
     """ Defines MonadOperators class.
 
     MonadOperators is a MonadAlias which is used to add operators for
-    map (*), amap (&), and bind (>>) methods to Monad classes.
+    map (<<), amap (&), bind (>>), and then (*) methods to Monad classes.
     """
+
     def __and__(self, monad_value):
         return self.amap(monad_value)
 
     def __rmul__(self, function):
-        return self.map(function)
+        return self.then(function)
+
+    def __mul__(self, function):
+        return self.then(function)
 
     def __rshift__(self, kleisli_function):
         return self.bind(kleisli_function)
+
+    def __rlshift__(self, function):
+        return self.map(function)
