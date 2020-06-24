@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "boxx-pymonad"
-version = "0.1.0"
+version = "0.2.0"
 description = "My Implementation of pymonad package."
 authors = ["Will Boxx <wboxx1@gmail.com>"]
 license = "MIT license"
