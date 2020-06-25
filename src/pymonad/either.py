@@ -2,7 +2,12 @@
 # (c) Copyright 2014, 2020 by Jason DeLaat.
 # Licensed under BSD 3-clause licence.
 # --------------------------------------------------------
-""" Implements the Either monad and related functions.
+"""
+************
+Either Monad 
+************
+
+Implements the Either monad and related functions.
 
 The Either type represents values that can either type A or type B -
 for any types A and B - but not both at the same time. As a function
