@@ -219,12 +219,21 @@ map (&lt;&lt;), amap (&amp;), bind (&gt;&gt;), and then (*) methods to Monad cla
 <p>Provides monad classes with operators.</p>
 <p>The operators module overrides all base monad types and their aliases
 with versions which support operators.</p>
-<p>The defined operators are:
-*  &amp;  - amap
-*  &gt;&gt; - bind
-*  &lt;&lt; - map
-*  *  - then</p>
 <dl class="docutils">
+<dt>The defined operators are:</dt>
+<dd><ul class="first last simple">
+<li>&amp;  - amap</li>
+<li>&gt;&gt; - bind</li>
+<li>&lt;&lt; - map</li>
+<li><ul class="first">
+<li><ul class="first">
+<li>then</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt>Example:</dt>
 <dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymonad.operators</span> <span class="k">import</span> <span class="n">Maybe</span><span class="p">,</span> <span class="n">Just</span><span class="p">,</span> <span class="n">Nothing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymonad.tools</span> <span class="k">import</span> <span class="n">curry</span>

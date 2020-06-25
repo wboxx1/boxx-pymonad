@@ -68,7 +68,7 @@ coverage: ## check code coverage quickly with the default Python
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/boxx_pymonad.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -M -o docs/ src/pymonad
+	sphinx-apidoc -M -P -o docs/ src/pymonad
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
