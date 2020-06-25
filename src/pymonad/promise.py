@@ -10,7 +10,7 @@ computations and ensure the ordering of execution. In addition to the
 standard operations on monads, Promises also provide a 'catch' method
 which allows for recovery from errors.
 
-    Example:
+Example:
     >>> import asyncio
     >>> from pymonad.promise import Promise
     >>> from pymonad.tools import curry
@@ -58,7 +58,7 @@ You can also create a Promise by passing a function directly. This
 function takes two callbacks as input to signal a successful
 computation or a failed one.
 
-    Example:
+Example:
     >>> import asyncio
 
     >>> def main():
@@ -69,7 +69,7 @@ computation or a failed one.
 The 'resolve' callback can take a value of any type but the 'reject'
 callback should always take an Exception as its argument.
 
-    Example:
+Example:
     >>> import asyncio
 
     >>> def main():
@@ -81,7 +81,7 @@ When run, this program will crash having raised the IndexError without
 catching it. Similarly, the catch method takes a function which
 accepts an Exception as it's input.
 
-    Example:
+Example:
     >>> import asyncio
 
     >>> def main():
@@ -209,24 +209,24 @@ def Promise(function: PromiseFunction) -> _Promise[T]:  # pylint: disable=invali
     """ Constructs a Promise object for ordering concurrent computations.
 
     Arguments:
-      function: a function taking two callback typically called
-        'resolve' and 'reject'. When the computation is successful the
-        value should be returned by calling resolve with the result. If
-        there is an error, call 'reject' with an instance of the
-        Exception class.
+        function: a function taking two callback typically called
+            'resolve' and 'reject'. When the computation is successful the
+            value should be returned by calling resolve with the result. If
+            there is an error, call 'reject' with an instance of the
+            Exception class.
 
     Returns:
-      A new Promise object.
+        A new Promise object.
 
     Example:
-    >>> Promise(lambda resolve, reject: resolve('any value'))
+        >>> Promise(lambda resolve, reject: resolve('any value'))
 
-    >>>   def some_computation(resolve, reject):
-    >>>       if True:
-    >>>           return resolve(10)
-    >>>       else:
-    >>>           reject(TypeError('Fake error.')) # doesn't need to be returned
-    >>>   Promise(some_computation)
+        >>>   def some_computation(resolve, reject):
+        >>>       if True:
+        >>>           return resolve(10)
+        >>>       else:
+        >>>           reject(TypeError('Fake error.')) # doesn't need to be returned
+        >>>   Promise(some_computation)
     """
 
     @pymonad.tools.curry(3)

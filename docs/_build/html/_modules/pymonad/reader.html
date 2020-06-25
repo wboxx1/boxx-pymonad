@@ -51,13 +51,15 @@
 <span class="kn">import</span> <span class="nn">pymonad.monad</span>
 <span class="kn">import</span> <span class="nn">pymonad.tools</span>
 
-<span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
 
 <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_bind</span><span class="p">(</span><span class="n">function_f</span><span class="p">,</span> <span class="n">function_g</span><span class="p">,</span> <span class="n">read_only</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">function_f</span><span class="p">(</span><span class="n">function_g</span><span class="p">(</span><span class="n">read_only</span><span class="p">))(</span><span class="n">read_only</span><span class="p">)</span>
+
 
 <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_bind_or_map</span><span class="p">(</span><span class="n">function_f</span><span class="p">,</span> <span class="n">function_g</span><span class="p">,</span> <span class="n">read_only</span><span class="p">):</span>
@@ -66,54 +68,64 @@
     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_map</span><span class="p">(</span><span class="n">function_f</span><span class="p">,</span> <span class="n">function_g</span><span class="p">,</span> <span class="n">read_only</span><span class="p">)</span>
 
+
 <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_map</span><span class="p">(</span><span class="n">function_f</span><span class="p">,</span> <span class="n">function_g</span><span class="p">,</span> <span class="n">read_only</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">function_f</span><span class="p">(</span><span class="n">function_g</span><span class="p">(</span><span class="n">read_only</span><span class="p">))</span>
 
+
 <span class="k">class</span> <span class="nc">_Reader</span><span class="p">(</span><span class="n">pymonad</span><span class="o">.</span><span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]):</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_Reader[Any, T]&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Reader[Any, T]&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="n">value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">amap</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_Reader[R, Callable[[S], T]]&#39;</span><span class="p">,</span> <span class="n">monad_value</span><span class="p">:</span> <span class="s1">&#39;_Reader[R, S]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_Reader[R, T]&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">amap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Reader[R, Callable[[S], T]]&quot;</span><span class="p">,</span> <span class="n">monad_value</span><span class="p">:</span> <span class="s2">&quot;_Reader[R, S]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Reader[R, T]&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="bp">self</span><span class="p">(</span><span class="n">r</span><span class="p">)(</span><span class="n">monad_value</span><span class="p">(</span><span class="n">r</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_Reader[R, S]&#39;</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s1">&#39;_Reader[R, T]&#39;</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_Reader[R, T]&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span><span class="n">_bind</span><span class="p">(</span><span class="n">kleisli_function</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span> <span class="c1"># pylint: disable=no-value-for-parameter</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Reader[R, S]&quot;</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s2">&quot;_Reader[R, T]&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Reader[R, T]&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span>
+            <span class="n">_bind</span><span class="p">(</span><span class="n">kleisli_function</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span>
 
-    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_Reader[R, S]&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;_Reader[R, T]&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span><span class="n">_map</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span> <span class="c1"># pylint: disable=no-value-for-parameter</span>
+    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Reader[R, S]&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Reader[R, T]&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span><span class="n">_map</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span>
 
     <span class="k">def</span> <span class="nf">then</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_Reader[R, S]&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s1">&#39;_Reader[R, T]&#39;</span><span class="p">]]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_Reader[R, T]&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span><span class="n">_bind_or_map</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span> <span class="c1"># pylint: disable=no-value-for-parameter</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Reader[R, S]&quot;</span><span class="p">,</span>
+        <span class="n">function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s2">&quot;_Reader[R, T]&quot;</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Reader[R, T]&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Reader</span><span class="p">(</span>
+            <span class="n">_bind_or_map</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="n">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../../pymonad.html#pymonad.reader.Reader">[docs]</a><span class="k">def</span> <span class="nf">Reader</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">R</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_Reader</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span> <span class="c1"># pylint: disable=invalid-name</span>
+
+<div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../../pymonad.html#pymonad.reader.Reader">[docs]</a><span class="k">def</span> <span class="nf">Reader</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">R</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_Reader</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>  <span class="c1"># pylint: disable=invalid-name</span>
     <span class="sd">&quot;&quot;&quot; Creates an instance of the Reader monad.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">      function: a function which takes the read-only data as input and</span>
-<span class="sd">        returns any appropriate type.</span>
+<span class="sd">        function: a function which takes the read-only data as input and</span>
+<span class="sd">            returns any appropriate type.</span>
 
 <span class="sd">    Result:</span>
-<span class="sd">      An instance of the Reader monad.</span>
+<span class="sd">        An instance of the Reader monad.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_Reader</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
 
 <span class="n">Reader</span><span class="o">.</span><span class="n">apply</span> <span class="o">=</span> <span class="n">_Reader</span><span class="o">.</span><span class="n">apply</span>
 <span class="n">Reader</span><span class="o">.</span><span class="n">insert</span> <span class="o">=</span> <span class="n">_Reader</span><span class="o">.</span><span class="n">insert</span>
 
 
-
-
-
-<div class="viewcode-block" id="Compose"><a class="viewcode-back" href="../../pymonad.html#pymonad.reader.Compose">[docs]</a><span class="k">def</span> <span class="nf">Compose</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">R</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_Reader</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span> <span class="c1"># pylint: disable=invalid-name</span>
+<div class="viewcode-block" id="Compose"><a class="viewcode-back" href="../../pymonad.html#pymonad.reader.Compose">[docs]</a><span class="k">def</span> <span class="nf">Compose</span><span class="p">(</span>
+    <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">R</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Reader</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>  <span class="c1"># pylint: disable=invalid-name</span>
     <span class="sd">&quot;&quot;&quot; Creates an instance of the Compose monad.</span>
 
 <span class="sd">    Compose is basically an alias for the Reader monad except with the</span>
@@ -141,10 +153,6 @@
     <span class="k">return</span> <span class="n">_Reader</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
-
-
-
-
 <span class="k">class</span> <span class="nc">_Pipe</span><span class="p">(</span><span class="n">pymonad</span><span class="o">.</span><span class="n">monad</span><span class="o">.</span><span class="n">MonadAlias</span><span class="p">,</span> <span class="n">_Reader</span><span class="p">[</span><span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">]):</span>
     <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calls the composed Pipe function returning  the embedded result.</span>
@@ -158,7 +166,8 @@
     <span class="k">def</span> <span class="nf">__pos__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Pipe"><a class="viewcode-back" href="../../pymonad.html#pymonad.reader.Pipe">[docs]</a><span class="k">def</span> <span class="nf">Pipe</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Pipe</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span> <span class="c1"># pylint: disable=invalid-name</span>
+
+<div class="viewcode-block" id="Pipe"><a class="viewcode-back" href="../../pymonad.html#pymonad.reader.Pipe">[docs]</a><span class="k">def</span> <span class="nf">Pipe</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Pipe</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>  <span class="c1"># pylint: disable=invalid-name</span>
     <span class="sd">&quot;&quot;&quot; Creates an instance of the Pipe monad.</span>
 
 <span class="sd">    Pipe is basically an alias for the Reader monad except with the</span>

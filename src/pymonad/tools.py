@@ -71,11 +71,11 @@ possible to curry functions which take a variable number of
 arguments like the built-in 'map' function.
 
 Example:
->>> curried_map = curry(2, map)
+    >>> curried_map = curry(2, map)
 
->>> @curry(2)
->>> def some_func(x, y, z):
->>>     return x + y - z
+    >>> @curry(2)
+    >>> def some_func(x, y, z):
+    >>>     return x + y - z
 
 Args:
     number_of_arguments: The number of arguments function_to_curry
@@ -114,15 +114,15 @@ def kleisli_compose(
     which maps values of type a to values of some sub-class of Monad.
 
     Example:
-    >>> def fail_if_zero(x):
-    >>>     return Nothing if x is zero else Just(x)
+        >>> def fail_if_zero(x):
+        >>>     return Nothing if x is zero else Just(x)
 
-    >>> def add1(x):
-    >>>     return Just(x + 1)
+        >>> def add1(x):
+        >>>     return Just(x + 1)
 
-    >>> new_function = kleisli_compose(add1, fail_if_zero)
-    >>> new_function(0) # returns Just(1)
-    >>> new_function(-1) # returns Nothing
+        >>> new_function = kleisli_compose(add1, fail_if_zero)
+        >>> new_function(0) # returns Just(1)
+        >>> new_function(-1) # returns Nothing
 
     add1 and fail_if_zero are Kleisli functions and new_function is
     the function which results from first performing add1 followed by

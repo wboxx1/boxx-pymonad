@@ -49,7 +49,7 @@
 <span class="sd">standard operations on monads, Promises also provide a &#39;catch&#39; method</span>
 <span class="sd">which allows for recovery from errors.</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">Example:</span>
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
 <span class="sd">    &gt;&gt;&gt; from pymonad.promise import Promise</span>
 <span class="sd">    &gt;&gt;&gt; from pymonad.tools import curry</span>
@@ -97,7 +97,7 @@
 <span class="sd">function takes two callbacks as input to signal a successful</span>
 <span class="sd">computation or a failed one.</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">Example:</span>
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
 
 <span class="sd">    &gt;&gt;&gt; def main():</span>
@@ -108,7 +108,7 @@
 <span class="sd">The &#39;resolve&#39; callback can take a value of any type but the &#39;reject&#39;</span>
 <span class="sd">callback should always take an Exception as its argument.</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">Example:</span>
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
 
 <span class="sd">    &gt;&gt;&gt; def main():</span>
@@ -120,7 +120,7 @@
 <span class="sd">catching it. Similarly, the catch method takes a function which</span>
 <span class="sd">accepts an Exception as it&#39;s input.</span>
 
-<span class="sd">    Example:</span>
+<span class="sd">Example:</span>
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
 
 <span class="sd">    &gt;&gt;&gt; def main():</span>
@@ -248,24 +248,24 @@
     <span class="sd">&quot;&quot;&quot; Constructs a Promise object for ordering concurrent computations.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">      function: a function taking two callback typically called</span>
-<span class="sd">        &#39;resolve&#39; and &#39;reject&#39;. When the computation is successful the</span>
-<span class="sd">        value should be returned by calling resolve with the result. If</span>
-<span class="sd">        there is an error, call &#39;reject&#39; with an instance of the</span>
-<span class="sd">        Exception class.</span>
+<span class="sd">        function: a function taking two callback typically called</span>
+<span class="sd">            &#39;resolve&#39; and &#39;reject&#39;. When the computation is successful the</span>
+<span class="sd">            value should be returned by calling resolve with the result. If</span>
+<span class="sd">            there is an error, call &#39;reject&#39; with an instance of the</span>
+<span class="sd">            Exception class.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">      A new Promise object.</span>
+<span class="sd">        A new Promise object.</span>
 
 <span class="sd">    Example:</span>
-<span class="sd">    &gt;&gt;&gt; Promise(lambda resolve, reject: resolve(&#39;any value&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; Promise(lambda resolve, reject: resolve(&#39;any value&#39;))</span>
 
-<span class="sd">    &gt;&gt;&gt;   def some_computation(resolve, reject):</span>
-<span class="sd">    &gt;&gt;&gt;       if True:</span>
-<span class="sd">    &gt;&gt;&gt;           return resolve(10)</span>
-<span class="sd">    &gt;&gt;&gt;       else:</span>
-<span class="sd">    &gt;&gt;&gt;           reject(TypeError(&#39;Fake error.&#39;)) # doesn&#39;t need to be returned</span>
-<span class="sd">    &gt;&gt;&gt;   Promise(some_computation)</span>
+<span class="sd">        &gt;&gt;&gt;   def some_computation(resolve, reject):</span>
+<span class="sd">        &gt;&gt;&gt;       if True:</span>
+<span class="sd">        &gt;&gt;&gt;           return resolve(10)</span>
+<span class="sd">        &gt;&gt;&gt;       else:</span>
+<span class="sd">        &gt;&gt;&gt;           reject(TypeError(&#39;Fake error.&#39;)) # doesn&#39;t need to be returned</span>
+<span class="sd">        &gt;&gt;&gt;   Promise(some_computation)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>

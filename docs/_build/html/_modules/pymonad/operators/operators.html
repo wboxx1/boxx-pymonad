@@ -48,17 +48,17 @@
 <span class="sd">__rshift__ defined.</span>
 
 <span class="sd">Example:</span>
-<span class="sd">&gt;&gt;&gt; class MaybeOp(MonadOperators, Maybe):</span>
-<span class="sd">&gt;&gt;&gt;     pass</span>
+<span class="sd">    &gt;&gt;&gt; class MaybeOp(MonadOperators, Maybe):</span>
+<span class="sd">    &gt;&gt;&gt;     pass</span>
 
 <span class="sd">Nothing extra needs to be implemented to get the correct behaviour</span>
 <span class="sd">unless the monad has multiple &#39;constructors&#39; such as Just and</span>
 <span class="sd">Nothing. In this case, we need to override those constructors as well:</span>
 
 <span class="sd">Example:</span>
-<span class="sd">&gt;&gt;&gt; def Just(value):</span>
-<span class="sd">&gt;&gt;&gt;     return MaybeOp(value, True)</span>
-<span class="sd">&gt;&gt;&gt; Nothing = MaybeOp(None, False)</span>
+<span class="sd">    &gt;&gt;&gt; def Just(value):</span>
+<span class="sd">    &gt;&gt;&gt;     return MaybeOp(value, True)</span>
+<span class="sd">    &gt;&gt;&gt; Nothing = MaybeOp(None, False)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pymonad.monad</span>
 

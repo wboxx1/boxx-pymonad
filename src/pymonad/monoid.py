@@ -51,9 +51,9 @@ class ZERO(metaclass=_MonoidZeroMeta):  # pylint: disable=too-few-public-methods
     as calling the constructor simply returns the class itself.
 
     Example:
-    >>>    ZERO == ZERO() # True.
-    >>>    ZERO + 10      # 10
-    >>>    'hello' + ZERO # 'hello'
+        >>> ZERO == ZERO() # True.
+        >>> ZERO + 10      # 10
+        >>> 'hello' + ZERO # 'hello'
     """
 
     def __new__(cls):

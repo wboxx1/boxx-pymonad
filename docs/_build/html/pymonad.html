@@ -81,20 +81,22 @@ signal that a function may cause an error: Either we get back a useful
 result or we get back an error message.</p>
 <p>When creating Either values directly use the ‘Right’ or ‘Left’
 functions:</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
-<dd>x = Right(19)                     # Represents a result value
-y = Left(‘Something went wrong.’) # Represents an error value</dd>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">Right</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>                     <span class="c1"># Represents a result value</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Left</span><span class="p">(</span><span class="s1">&#39;Something went wrong.&#39;</span><span class="p">)</span> <span class="c1"># Represents an error value</span>
+</pre></div>
+</div>
+</dd>
 </dl>
-</div></blockquote>
 <p>The ‘insert’ class method is a wrapper around the ‘Right’ function.</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
-<dd>x = Either.insert(9) # Same as Right(9)</dd>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">Either</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="c1"># Same as Right(9)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
-</div></blockquote>
 <dl class="class">
 <dt id="pymonad.either.Either">
 <em class="property">class </em><code class="descclassname">pymonad.either.</code><code class="descname">Either</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/either.html#Either"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either" title="Permalink to this definition">¶</a></dt>
@@ -171,8 +173,7 @@ returning a new functor value.</p>
 non-deterministic results, that is: functions which return more than
 one (possible) result. For example, calculating how chess pieces might
 move.</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
 <dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">knight_move</span><span class="p">(</span><span class="n">position</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>   <span class="c1"># calculates a list of every possible square a knight could move</span>
@@ -192,7 +193,6 @@ move.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
 <dl class="function">
 <dt id="pymonad.list.ListMonad">
 <code class="descclassname">pymonad.list.</code><code class="descname">ListMonad</code><span class="sig-paren">(</span><em>*elements</em><span class="sig-paren">)</span> &#x2192; pymonad.list._List[T]<a class="reference internal" href="_modules/pymonad/list.html#ListMonad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.list.ListMonad" title="Permalink to this definition">¶</a></dt>
@@ -214,21 +214,23 @@ return a value. Alternately, if used as function inputs, Maybe values
 can be used to indicate ‘optional’ inputs, explicitly passing
 ‘Nothing’ when no input is required.</p>
 <p>When creating Maybe values directly use the ‘Just’ function or ‘Nothing’:</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
-<dd>x = Just(19)
-y = Just(‘A string’)
-z = Nothing</dd>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">Just</span><span class="p">(</span><span class="mi">19</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Just</span><span class="p">(</span><span class="s1">&#39;A string&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">Nothing</span>
+</pre></div>
+</div>
+</dd>
 </dl>
-</div></blockquote>
 <p>The ‘insert’ class method is a wrapper around the ‘Just’ function.</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
-<dd>x = Maybe.insert(9) # Same as Just(9)</dd>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="c1"># Same as Just(9)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
-</div></blockquote>
 <dl class="function">
 <dt id="pymonad.maybe.Just">
 <code class="descclassname">pymonad.maybe.</code><code class="descname">Just</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Just"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Just" title="Permalink to this definition">¶</a></dt>
@@ -327,15 +329,18 @@ returning a new functor value.</p>
 <dd>A monad object based on the input class with the wrapped
 function and a new method, ‘to_arguments’ which will apply
 the function.</dd>
+<dt>Example:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">Just</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">Just</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Maybe</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">add</span><span class="p">)</span><span class="o">.</span><span class="n">to_arguments</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># results in Just(3)</span>
+</pre></div>
+</div>
+</dd>
 </dl>
-<p>Example:
-&gt;&gt;&gt;    &#64;curry(2)
-&gt;&gt;&gt;    def add(a, b): return a + b
-&gt;&gt;&gt;
-&gt;&gt;&gt;    x = Just(1)
-&gt;&gt;&gt;    y = Just(2)
-&gt;&gt;&gt;
-&gt;&gt;&gt;    Maybe.apply(add).to_arguments(x, y)  # results in Just(3)</p>
 </dd></dl>
 
 <dl class="method">
@@ -390,8 +395,7 @@ etc.)</dd>
 then re-cast the result into the alias class. This gives users a
 mechanism to give monads more semantically meaningful names
 without needing to re-implement them.</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
 <dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Option</span><span class="p">(</span><span class="n">MonadAlias</span><span class="p">,</span> <span class="n">Maybe</span><span class="p">):</span> <span class="c1"># MonadAlias must be the first parent class</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -407,12 +411,10 @@ without needing to re-implement them.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
 <p>Functions which have been previously defined to work with the base
 type, Maybe in this case, work transparently with the aliased type
 without needing to be re-written.</p>
-<blockquote>
-<div><dl class="docutils">
+<dl class="docutils">
 <dt>Example:</dt>
 <dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add_1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Written for the Maybe monad.</span>
 </pre></div>
@@ -422,7 +424,6 @@ without needing to be re-written.</p>
 </div>
 </dd>
 </dl>
-</div></blockquote>
 <dl class="method">
 <dt id="pymonad.monad.MonadAlias.amap">
 <code class="descname">amap</code><span class="sig-paren">(</span><em>monad_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias.amap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias.amap" title="Permalink to this definition">¶</a></dt>
@@ -541,10 +542,15 @@ See also: the mzero function.</p>
 implemented on the class itself to always return the other
 element. It is not actually possible to create an instance of ZERO
 as calling the constructor simply returns the class itself.</p>
-<p>Example:
-&gt;&gt;&gt;    ZERO == ZERO() # True.
-&gt;&gt;&gt;    ZERO + 10      # 10
-&gt;&gt;&gt;    ‘hello’ + ZERO # ‘hello’</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ZERO</span> <span class="o">==</span> <span class="n">ZERO</span><span class="p">()</span> <span class="c1"># True.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ZERO</span> <span class="o">+</span> <span class="mi">10</span>      <span class="c1"># 10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;hello&#39;</span> <span class="o">+</span> <span class="n">ZERO</span> <span class="c1"># &#39;hello&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -578,11 +584,13 @@ objects and function in a similar way. Promises take asynchronous
 computations and ensure the ordering of execution. In addition to the
 standard operations on monads, Promises also provide a ‘catch’ method
 which allows for recovery from errors.</p>
-<blockquote>
-<div><p>Example:
-&gt;&gt;&gt; import asyncio
-&gt;&gt;&gt; from pymonad.promise import Promise
-&gt;&gt;&gt; from pymonad.tools import curry</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymonad.promise</span> <span class="k">import</span> <span class="n">Promise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymonad.tools</span> <span class="k">import</span> <span class="n">curry</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>   <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
@@ -615,10 +623,11 @@ which allows for recovery from errors.</p>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 <p>The above example will print the value ‘3’ to the screen. The
 ‘long_id’ coroutine is a stand-in for any async operation that may
 take some amount of time. When we await the Promise inside the print()
@@ -629,36 +638,44 @@ then print the string ‘Recovering…’ instead of ‘3’.</p>
 <p>You can also create a Promise by passing a function directly. This
 function takes two callbacks as input to signal a successful
 computation or a failed one.</p>
-<blockquote>
-<div><p>Example:
-&gt;&gt;&gt; import asyncio</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">resolve</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 <p>The ‘resolve’ callback can take a value of any type but the ‘reject’
 callback should always take an Exception as its argument.</p>
-<blockquote>
-<div><p>Example:
-&gt;&gt;&gt; import asyncio</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">reject</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">())))</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 <p>When run, this program will crash having raised the IndexError without
 catching it. Similarly, the catch method takes a function which
 accepts an Exception as it’s input.</p>
-<blockquote>
-<div><p>Example:
-&gt;&gt;&gt; import asyncio</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>        <span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">reject</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">()))</span>
@@ -666,10 +683,11 @@ accepts an Exception as it’s input.</p>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 <p>This program prints “&lt;type ‘IndexError’&gt;” as its output.</p>
 <dl class="function">
 <dt id="pymonad.promise.Promise">
@@ -687,10 +705,11 @@ Exception class.</dd>
 </dd>
 <dt>Returns:</dt>
 <dd>A new Promise object.</dd>
-</dl>
-<p>Example:
-&gt;&gt;&gt; Promise(lambda resolve, reject: resolve(‘any value’))</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span>  <span class="k">def</span> <span class="nf">some_computation</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">resolve</span><span class="p">(</span><span class="s1">&#39;any value&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span>  <span class="k">def</span> <span class="nf">some_computation</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>      <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>          <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span>      <span class="k">else</span><span class="p">:</span>
@@ -698,6 +717,8 @@ Exception class.</dd>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">Promise</span><span class="p">(</span><span class="n">some_computation</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -816,14 +837,17 @@ applied. It can be used either as a normal function call or as a
 decorator. The required number_of_arguments parameter makes it
 possible to curry functions which take a variable number of
 arguments like the built-in ‘map’ function.</p>
-<p>Example:
-&gt;&gt;&gt; curried_map = curry(2, map)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">curried_map</span> <span class="o">=</span> <span class="n">curry</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">map</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">some_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span>
 </pre></div>
 </div>
-<dl class="docutils">
+</dd>
 <dt>Args:</dt>
 <dd>number_of_arguments: The number of arguments function_to_curry
 takes as input. If function_to_curry takes a variable number of
@@ -856,18 +880,23 @@ f_kleisli :: a -&gt; (b, m)</p>
 <p>The type (b, m) corresponds to the internal representation of the
 Monad class, so in terms of pymonad, a Kleisli function is one
 which maps values of type a to values of some sub-class of Monad.</p>
-<p>Example:
-&gt;&gt;&gt; def fail_if_zero(x):
-&gt;&gt;&gt;     return Nothing if x is zero else Just(x)</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">fail_if_zero</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Nothing</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="n">zero</span> <span class="k">else</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span> <span class="o">=</span> <span class="n">kleisli_compose</span><span class="p">(</span><span class="n">add1</span><span class="p">,</span> <span class="n">fail_if_zero</span><span class="p">)</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span> <span class="o">=</span> <span class="n">kleisli_compose</span><span class="p">(</span><span class="n">add1</span><span class="p">,</span> <span class="n">fail_if_zero</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># returns Just(1)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># returns Nothing</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 <p>add1 and fail_if_zero are Kleisli functions and new_function is
 the function which results from first performing add1 followed by
 fail_if_zero.</p>
@@ -887,10 +916,13 @@ function_g: a function with type: b -&gt; (c, m)</dd>
 <p>The Writer monad is typically used to append information to a log. The
 log type is often just strings but can be any type that behaves as a
 monoid with a defined + (__add__) operator.</p>
-<p>Example:
-&gt;&gt;&gt; &#64;curry(2)
-&gt;&gt;&gt; def add(x, y):
-&gt;&gt;&gt;     return Writer(x + y, f”Called function ‘add’ with arguments {x} and {y}. Result: {x + y}”)</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Writer</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;Called function &#39;add&#39; with arguments </span><span class="si">{x}</span><span class="s2"> and </span><span class="si">{y}</span><span class="s2">. Result: {x + y}&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Writer</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;Called function &#39;mul&#39; with arguments </span><span class="si">{x}</span><span class="s2"> and </span><span class="si">{y}</span><span class="s2">. Result: {x * y}&quot;</span><span class="p">)</span>
@@ -902,10 +934,12 @@ monoid with a defined + (__add__) operator.</p>
 <span class="gp">&gt;&gt;&gt; </span>                     <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># logged_arithmetic = (2, &quot;Called function &#39;add&#39; with arguments 1 and 0. Result: 1</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># logged_arithmetic = (2, &quot;Called function &#39;add&#39; with arguments 1 and 0. Result: 1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1">#                     Called function &#39;mul&#39; with arguments 2 and 1. Result: 2&quot;)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 <dl class="class">
 <dt id="pymonad.writer.Writer">
 <em class="property">class </em><code class="descclassname">pymonad.writer.</code><code class="descname">Writer</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/writer.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.writer.Writer" title="Permalink to this definition">¶</a></dt>

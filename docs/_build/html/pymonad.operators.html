@@ -137,16 +137,26 @@
 <p>The MonadOperators class allows users to create a monad alias for
 any monad class with the operators __and__, __rmul__, and
 __rshift__ defined.</p>
-<p>Example:
-&gt;&gt;&gt; class MaybeOp(MonadOperators, Maybe):
-&gt;&gt;&gt;     pass</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MaybeOp</span><span class="p">(</span><span class="n">MonadOperators</span><span class="p">,</span> <span class="n">Maybe</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">pass</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 <p>Nothing extra needs to be implemented to get the correct behaviour
 unless the monad has multiple ‘constructors’ such as Just and
 Nothing. In this case, we need to override those constructors as well:</p>
-<p>Example:
-&gt;&gt;&gt; def Just(value):
-&gt;&gt;&gt;     return MaybeOp(value, True)
-&gt;&gt;&gt; Nothing = MaybeOp(None, False)</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">Just</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">MaybeOp</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Nothing</span> <span class="o">=</span> <span class="n">MaybeOp</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
 <dl class="class">
 <dt id="pymonad.operators.operators.MonadOperators">
 <em class="property">class </em><code class="descclassname">pymonad.operators.operators.</code><code class="descname">MonadOperators</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/operators/operators.html#MonadOperators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.operators.MonadOperators" title="Permalink to this definition">¶</a></dt>
@@ -210,13 +220,16 @@ map (&lt;&lt;), amap (&amp;), bind (&gt;&gt;), and then (*) methods to Monad cla
 <p>The operators module overrides all base monad types and their aliases
 with versions which support operators.</p>
 <p>The defined operators are:
-* &amp;  - amap
-* &gt;&gt; - bind
-* &lt;&lt; - map
-* *  - then</p>
-<p>Example:
-&gt;&gt;&gt; from pymonad.operators import Maybe, Just, Nothing
-&gt;&gt;&gt; from pymonad.tools import curry</p>
+*  &amp;  - amap
+*  &gt;&gt; - bind
+*  &lt;&lt; - map
+*  *  - then</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymonad.operators</span> <span class="k">import</span> <span class="n">Maybe</span><span class="p">,</span> <span class="n">Just</span><span class="p">,</span> <span class="n">Nothing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pymonad.tools</span> <span class="k">import</span> <span class="n">curry</span>
+</pre></div>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 </pre></div>
@@ -229,7 +242,7 @@ with versions which support operators.</p>
 <span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Equivalent to Maybe.apply(add).to_arguments(Just(1), Just(2))</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Equivalent to Maybe.apply(add).to_arguments(Just(1), Just(2))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">add</span> <span class="o">&lt;&lt;</span> <span class="n">Just</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Just</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># Just 3</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Equivalent to Maybe.insert(5).bind(div(2)).bind(div(0))</span>
@@ -240,6 +253,8 @@ with versions which support operators.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Just</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># Nothing</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 </div>
 </div>
 

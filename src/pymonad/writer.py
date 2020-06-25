@@ -9,21 +9,21 @@ log type is often just strings but can be any type that behaves as a
 monoid with a defined + (__add__) operator.
 
 Example:
->>> @curry(2)
->>> def add(x, y):
->>>     return Writer(x + y, f"Called function 'add' with arguments {x} and {y}. Result: {x + y}")
+    >>> @curry(2)
+    >>> def add(x, y):
+    >>>     return Writer(x + y, f"Called function 'add' with arguments {x} and {y}. Result: {x + y}")
 
->>> @curry(2)
->>> def mul(x, y):
->>>     return Writer(x * y, f"Called function 'mul' with arguments {x} and {y}. Result: {x * y}")
+    >>> @curry(2)
+    >>> def mul(x, y):
+    >>>     return Writer(x * y, f"Called function 'mul' with arguments {x} and {y}. Result: {x * y}")
 
->>> logged_arithmetic = (Writer
->>>                      .insert(0)
->>>                      .then(add(1))
->>>                      .then(mul(2)))
+    >>> logged_arithmetic = (Writer
+    >>>                      .insert(0)
+    >>>                      .then(add(1))
+    >>>                      .then(mul(2)))
 
->>> # logged_arithmetic = (2, "Called function 'add' with arguments 1 and 0. Result: 1
->>> #                     Called function 'mul' with arguments 2 and 1. Result: 2")
+    >>> # logged_arithmetic = (2, "Called function 'add' with arguments 1 and 0. Result: 1
+    >>> #                     Called function 'mul' with arguments 2 and 1. Result: 2")
 """
 from typing import Callable, Generic, List, TypeVar
 

@@ -8,32 +8,32 @@ The operators module overrides all base monad types and their aliases
 with versions which support operators.
 
 The defined operators are:
-* &  - amap
-* >> - bind
-* << - map
-* *  - then
+*  &  - amap
+*  >> - bind
+*  << - map
+*  *  - then
 
 Example:
->>> from pymonad.operators import Maybe, Just, Nothing
->>> from pymonad.tools import curry
+    >>> from pymonad.operators import Maybe, Just, Nothing
+    >>> from pymonad.tools import curry
 
->>> @curry(2)
->>> def add(x, y): return x + y
+    >>> @curry(2)
+    >>> def add(x, y): return x + y
 
->>> @curry(2)
->>> def div(y, x):
->>>     if y == 0:
->>>         return Nothing
->>>     else:
->>>         return Just(x / y)
+    >>> @curry(2)
+    >>> def div(y, x):
+    >>>     if y == 0:
+    >>>         return Nothing
+    >>>     else:
+    >>>         return Just(x / y)
 
->>> # Equivalent to Maybe.apply(add).to_arguments(Just(1), Just(2))
->>> print(add << Just(1) & Just(2)) # Just 3
->>>
->>> # Equivalent to Maybe.insert(5).bind(div(2)).bind(div(0))
->>> print(Just(5) >> div(2) >> div(0)) # Nothing
->>>
->>> # Alternatively, each could be written with *
->>> print(add * Just(1) & Just(2)) # Just 3
->>> print(Just(5) * div(2) * div(0)) # Nothing
+    >>> # Equivalent to Maybe.apply(add).to_arguments(Just(1), Just(2))
+    >>> print(add << Just(1) & Just(2)) # Just 3
+    >>>
+    >>> # Equivalent to Maybe.insert(5).bind(div(2)).bind(div(0))
+    >>> print(Just(5) >> div(2) >> div(0)) # Nothing
+    >>>
+    >>> # Alternatively, each could be written with *
+    >>> print(add * Just(1) & Just(2)) # Just 3
+    >>> print(Just(5) * div(2) * div(0)) # Nothing
 """

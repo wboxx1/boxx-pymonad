@@ -48,21 +48,21 @@
 <span class="sd">monoid with a defined + (__add__) operator.</span>
 
 <span class="sd">Example:</span>
-<span class="sd">&gt;&gt;&gt; @curry(2)</span>
-<span class="sd">&gt;&gt;&gt; def add(x, y):</span>
-<span class="sd">&gt;&gt;&gt;     return Writer(x + y, f&quot;Called function &#39;add&#39; with arguments {x} and {y}. Result: {x + y}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; @curry(2)</span>
+<span class="sd">    &gt;&gt;&gt; def add(x, y):</span>
+<span class="sd">    &gt;&gt;&gt;     return Writer(x + y, f&quot;Called function &#39;add&#39; with arguments {x} and {y}. Result: {x + y}&quot;)</span>
 
-<span class="sd">&gt;&gt;&gt; @curry(2)</span>
-<span class="sd">&gt;&gt;&gt; def mul(x, y):</span>
-<span class="sd">&gt;&gt;&gt;     return Writer(x * y, f&quot;Called function &#39;mul&#39; with arguments {x} and {y}. Result: {x * y}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; @curry(2)</span>
+<span class="sd">    &gt;&gt;&gt; def mul(x, y):</span>
+<span class="sd">    &gt;&gt;&gt;     return Writer(x * y, f&quot;Called function &#39;mul&#39; with arguments {x} and {y}. Result: {x * y}&quot;)</span>
 
-<span class="sd">&gt;&gt;&gt; logged_arithmetic = (Writer</span>
-<span class="sd">&gt;&gt;&gt;                      .insert(0)</span>
-<span class="sd">&gt;&gt;&gt;                      .then(add(1))</span>
-<span class="sd">&gt;&gt;&gt;                      .then(mul(2)))</span>
+<span class="sd">    &gt;&gt;&gt; logged_arithmetic = (Writer</span>
+<span class="sd">    &gt;&gt;&gt;                      .insert(0)</span>
+<span class="sd">    &gt;&gt;&gt;                      .then(add(1))</span>
+<span class="sd">    &gt;&gt;&gt;                      .then(mul(2)))</span>
 
-<span class="sd">&gt;&gt;&gt; # logged_arithmetic = (2, &quot;Called function &#39;add&#39; with arguments 1 and 0. Result: 1</span>
-<span class="sd">&gt;&gt;&gt; #                     Called function &#39;mul&#39; with arguments 2 and 1. Result: 2&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; # logged_arithmetic = (2, &quot;Called function &#39;add&#39; with arguments 1 and 0. Result: 1</span>
+<span class="sd">    &gt;&gt;&gt; #                     Called function &#39;mul&#39; with arguments 2 and 1. Result: 2&quot;)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span>
 

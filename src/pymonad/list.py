@@ -9,7 +9,7 @@ non-deterministic results, that is: functions which return more than
 one (possible) result. For example, calculating how chess pieces might
 move.
 
-  Example:
+Example:
     >>> def knight_move(position):
     >>>    # calculates a list of every possible square a knight could move
     >>>    # to from it's current position

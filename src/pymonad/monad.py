@@ -65,13 +65,13 @@ class Monad(Generic[T]):
             the function.
 
         Example:
-        >>>    @curry(2)
-        >>>    def add(a, b): return a + b
-        >>>
-        >>>    x = Just(1)
-        >>>    y = Just(2)
-        >>>
-        >>>    Maybe.apply(add).to_arguments(x, y)  # results in Just(3)
+            >>> @curry(2)
+            >>> def add(a, b): return a + b
+            >>>
+            >>> x = Just(1)
+            >>> y = Just(2)
+            >>>
+            >>> Maybe.apply(add).to_arguments(x, y)  # results in Just(3)
         """
 
         class _Applicative(cls):
@@ -160,7 +160,7 @@ class MonadAlias(Monad[T]):
     mechanism to give monads more semantically meaningful names
     without needing to re-implement them.
 
-      Example:
+    Example:
         >>> class Option(MonadAlias, Maybe): # MonadAlias must be the first parent class
         >>>     def __repr__(self):
         >>>         return f'Some {self.value}' if self.monoid else 'Nothing'
@@ -174,7 +174,7 @@ class MonadAlias(Monad[T]):
     type, Maybe in this case, work transparently with the aliased type
     without needing to be re-written.
 
-      Example:
+    Example:
         >>> def add_1(x): return Just(x + 1) # Written for the Maybe monad.
 
         >>> opt_val = Option.insert(1).then(add_1) # Result: Some(2)

@@ -48,22 +48,29 @@
 <span class="kn">import</span> <span class="nn">pymonad.operators.operators</span>
 <span class="kn">import</span> <span class="nn">pymonad.state</span>
 
-<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
 
-<span class="k">class</span> <span class="nc">_State</span><span class="p">(</span><span class="n">pymonad</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">MonadOperators</span><span class="p">,</span> <span class="n">pymonad</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">_State</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="p">]):</span> <span class="c1"># pylint: disable=protected-access</span>
+
+<span class="k">class</span> <span class="nc">_State</span><span class="p">(</span>
+    <span class="n">pymonad</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">MonadOperators</span><span class="p">,</span> <span class="n">pymonad</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">_State</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="p">]</span>
+<span class="p">):</span>  <span class="c1"># pylint: disable=protected-access</span>
     <span class="sd">&quot;&quot;&quot; See pymonad.operators.operators and pymonad.state. &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="State"><a class="viewcode-back" href="../../../pymonad.operators.html#pymonad.operators.state.State">[docs]</a><span class="k">def</span> <span class="nf">State</span><span class="p">(</span><span class="n">state_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">S</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">_State</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span> <span class="c1"># pylint: disable=invalid-name</span>
+
+<div class="viewcode-block" id="State"><a class="viewcode-back" href="../../../pymonad.operators.html#pymonad.operators.state.State">[docs]</a><span class="k">def</span> <span class="nf">State</span><span class="p">(</span>
+    <span class="n">state_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">S</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_State</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>  <span class="c1"># pylint: disable=invalid-name</span>
     <span class="sd">&quot;&quot;&quot; The State monad constructor function.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">      state_function: a function with type State -&gt; (Any, State)</span>
+<span class="sd">        state_function: a function with type State -&gt; (Any, State)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">      An instance of the State monad.</span>
+<span class="sd">        An instance of the State monad.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_State</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">state_function</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">state_function</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span></div>
+
 
 <span class="n">State</span><span class="o">.</span><span class="n">apply</span> <span class="o">=</span> <span class="n">_State</span><span class="o">.</span><span class="n">apply</span>
 <span class="n">State</span><span class="o">.</span><span class="n">insert</span> <span class="o">=</span> <span class="n">_State</span><span class="o">.</span><span class="n">insert</span>

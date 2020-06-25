@@ -104,13 +104,13 @@
 <span class="sd">            the function.</span>
 
 <span class="sd">        Example:</span>
-<span class="sd">        &gt;&gt;&gt;    @curry(2)</span>
-<span class="sd">        &gt;&gt;&gt;    def add(a, b): return a + b</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt;    x = Just(1)</span>
-<span class="sd">        &gt;&gt;&gt;    y = Just(2)</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt;    Maybe.apply(add).to_arguments(x, y)  # results in Just(3)</span>
+<span class="sd">            &gt;&gt;&gt; @curry(2)</span>
+<span class="sd">            &gt;&gt;&gt; def add(a, b): return a + b</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; x = Just(1)</span>
+<span class="sd">            &gt;&gt;&gt; y = Just(2)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; Maybe.apply(add).to_arguments(x, y)  # results in Just(3)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">class</span> <span class="nc">_Applicative</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -199,7 +199,7 @@
 <span class="sd">    mechanism to give monads more semantically meaningful names</span>
 <span class="sd">    without needing to re-implement them.</span>
 
-<span class="sd">      Example:</span>
+<span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; class Option(MonadAlias, Maybe): # MonadAlias must be the first parent class</span>
 <span class="sd">        &gt;&gt;&gt;     def __repr__(self):</span>
 <span class="sd">        &gt;&gt;&gt;         return f&#39;Some {self.value}&#39; if self.monoid else &#39;Nothing&#39;</span>
@@ -213,7 +213,7 @@
 <span class="sd">    type, Maybe in this case, work transparently with the aliased type</span>
 <span class="sd">    without needing to be re-written.</span>
 
-<span class="sd">      Example:</span>
+<span class="sd">    Example:</span>
 <span class="sd">        &gt;&gt;&gt; def add_1(x): return Just(x + 1) # Written for the Maybe monad.</span>
 
 <span class="sd">        &gt;&gt;&gt; opt_val = Option.insert(1).then(add_1) # Result: Some(2)</span>

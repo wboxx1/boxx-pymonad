@@ -43,18 +43,27 @@
 <span class="c1"># --------------------------------------------------------</span>
 <span class="sd">&quot;&quot;&quot; Implements the State monad. &quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span> <span class="c1"># pylint: disable=unused-import</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Generic</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># pylint: disable=unused-import</span>
 
 <span class="kn">import</span> <span class="nn">pymonad.monad</span>
 <span class="kn">import</span> <span class="nn">pymonad.tools</span>
 
-<span class="n">A</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">)</span> <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
 
 <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_bind</span><span class="p">(</span><span class="n">monad_value</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">kleisli_function</span><span class="p">(</span><span class="n">monad_value</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">state</span><span class="p">))</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">monad_value</span><span class="o">.</span><span class="n">monoid</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+
 
 <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_bind_or_map</span><span class="p">(</span><span class="n">monad_value</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
@@ -63,59 +72,72 @@
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_map</span><span class="p">(</span><span class="n">monad_value</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
 
+
 <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_map</span><span class="p">(</span><span class="n">monad_value</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">monad_value</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">state</span><span class="p">)),</span> <span class="n">monad_value</span><span class="o">.</span><span class="n">monoid</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
 
+
 <span class="k">class</span> <span class="nc">_State</span><span class="p">(</span><span class="n">pymonad</span><span class="o">.</span><span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">A</span><span class="p">]):</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_State[Any, A]&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_State[Any, A]&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; See Monad.insert. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">State</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">amap</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_State[S, Callable[[A], B]]&#39;</span><span class="p">,</span> <span class="n">monad_value</span><span class="p">:</span> <span class="s1">&#39;_State[S, A]&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_State[S, B]&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">amap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_State[S, Callable[[A], B]]&quot;</span><span class="p">,</span> <span class="n">monad_value</span><span class="p">:</span> <span class="s2">&quot;_State[S, A]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_State[S, B]&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; See Monad.amap. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">State</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span>
-                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">s</span><span class="p">)(</span><span class="n">monad_value</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span>
-                      <span class="n">monad_value</span><span class="o">.</span><span class="n">monoid</span><span class="p">(</span><span class="n">s</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">State</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">s</span><span class="p">)(</span><span class="n">monad_value</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">monad_value</span><span class="o">.</span><span class="n">monoid</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_State[S, A]&#39;</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="s1">&#39;_State[S, B]&#39;</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_State[S, B]&#39;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_State[S, A]&quot;</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="s2">&quot;_State[S, B]&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_State[S, B]&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; See Monad.bind. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">State</span><span class="p">(</span><span class="n">_bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">))</span> <span class="c1"># pylint: disable=no-value-for-parameter</span>
+        <span class="k">return</span> <span class="n">State</span><span class="p">(</span>
+            <span class="n">_bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span>
 
-    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_State[S, A]&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="n">B</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s1">&#39;_State[S, B]&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_State[S, A]&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="n">B</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;_State[S, B]&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot; See Monad.map. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">State</span><span class="p">(</span><span class="n">_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">))</span> <span class="c1"># pylint: disable=no-value-for-parameter</span>
+        <span class="k">return</span> <span class="n">State</span><span class="p">(</span><span class="n">_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">))</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_State[S, A]&#39;</span><span class="p">,</span> <span class="n">input_state</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">S</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_State[S, A]&quot;</span><span class="p">,</span> <span class="n">input_state</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">A</span><span class="p">,</span> <span class="n">S</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot; Gives the state calculation an initial state and computes the result.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">          input_state: the initial state for the stateful calculation</span>
+<span class="sd">            input_state: the initial state for the stateful calculation</span>
 
 <span class="sd">        Result:</span>
-<span class="sd">          A tuple containing the result of the stateful calculation</span>
-<span class="sd">          and the final state.</span>
+<span class="sd">            A tuple containing the result of the stateful calculation</span>
+<span class="sd">            and the final state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">input_state</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">monoid</span><span class="p">(</span><span class="n">input_state</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">then</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">:</span> <span class="s1">&#39;_State[S, A]&#39;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="n">B</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="s1">&#39;_State[S, B]&#39;</span><span class="p">]]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_State[S, B]&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">State</span><span class="p">(</span><span class="n">_bind_or_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">))</span> <span class="c1"># pylint: disable=no-value-for-parameter</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_State[S, A]&quot;</span><span class="p">,</span>
+        <span class="n">function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="n">B</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">A</span><span class="p">],</span> <span class="s2">&quot;_State[S, B]&quot;</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_State[S, B]&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">State</span><span class="p">(</span>
+            <span class="n">_bind_or_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span>
 
-<div class="viewcode-block" id="State"><a class="viewcode-back" href="../../pymonad.html#pymonad.state.State">[docs]</a><span class="k">def</span> <span class="nf">State</span><span class="p">(</span><span class="n">state_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">A</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_State</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">A</span><span class="p">]:</span> <span class="c1"># pylint: disable=invalid-name</span>
+
+<div class="viewcode-block" id="State"><a class="viewcode-back" href="../../pymonad.html#pymonad.state.State">[docs]</a><span class="k">def</span> <span class="nf">State</span><span class="p">(</span>
+    <span class="n">state_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">A</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_State</span><span class="p">[</span><span class="n">S</span><span class="p">,</span> <span class="n">A</span><span class="p">]:</span>  <span class="c1"># pylint: disable=invalid-name</span>
     <span class="sd">&quot;&quot;&quot; The State monad constructor function.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">      state_function: a function with type State -&gt; (Any, State)</span>
+<span class="sd">        state_function: a function with type State -&gt; (Any, State)</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">      An instance of the State monad.</span>
+<span class="sd">        An instance of the State monad.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_State</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">state_function</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">state_function</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span></div>
+
 
 <span class="n">State</span><span class="o">.</span><span class="n">apply</span> <span class="o">=</span> <span class="n">_State</span><span class="o">.</span><span class="n">apply</span>
 <span class="n">State</span><span class="o">.</span><span class="n">insert</span> <span class="o">=</span> <span class="n">_State</span><span class="o">.</span><span class="n">insert</span>
