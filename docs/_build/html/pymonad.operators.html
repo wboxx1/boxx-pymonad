@@ -1,0 +1,322 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pymonad.operators package &#8212; boxx-pymonad 0.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="pymonad package" href="pymonad.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pymonad.html" title="pymonad package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pymonad</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pymonad.html" accesskey="U">pymonad package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pymonad-operators-package">
+<h1>pymonad.operators package<a class="headerlink" href="#pymonad-operators-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pymonad.operators.either">
+<span id="pymonad-operators-either-module"></span><h2>pymonad.operators.either module<a class="headerlink" href="#module-pymonad.operators.either" title="Permalink to this headline">¶</a></h2>
+<p>Adds operators to the Either monad.</p>
+<dl class="class">
+<dt id="pymonad.operators.either.Either">
+<em class="property">class </em><code class="descclassname">pymonad.operators.either.</code><code class="descname">Either</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/operators/either.html#Either"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.either.Either" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.operators.operators.MonadOperators" title="pymonad.operators.operators.MonadOperators"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.operators.operators.MonadOperators</span></code></a>, <a class="reference internal" href="pymonad.html#pymonad.either.Either" title="pymonad.either.Either"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.either.Either</span></code></a></p>
+<p>See pymonad.operators.operators and pymonad.either.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.operators.either.Error">
+<code class="descclassname">pymonad.operators.either.</code><code class="descname">Error</code><span class="sig-paren">(</span><em>value: S</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.either._Error[S, Any]<a class="reference internal" href="_modules/pymonad/operators/either.html#Error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.either.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an error value as the result of a calculation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.operators.either.Left">
+<code class="descclassname">pymonad.operators.either.</code><code class="descname">Left</code><span class="sig-paren">(</span><em>value: S</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.either.Either[S, Any]<a class="reference internal" href="_modules/pymonad/operators/either.html#Left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.either.Left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a value of the first possible type in the Either monad.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.operators.either.Result">
+<code class="descclassname">pymonad.operators.either.</code><code class="descname">Result</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.either._Error[Any, T]<a class="reference internal" href="_modules/pymonad/operators/either.html#Result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.either.Result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a value representing the successful result of a calculation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.operators.either.Right">
+<code class="descclassname">pymonad.operators.either.</code><code class="descname">Right</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.either.Either[Any, T]<a class="reference internal" href="_modules/pymonad/operators/either.html#Right"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.either.Right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a value of the second possible type in the Either monad.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators.list">
+<span id="pymonad-operators-list-module"></span><h2>pymonad.operators.list module<a class="headerlink" href="#module-pymonad.operators.list" title="Permalink to this headline">¶</a></h2>
+<p>Adds operators to the List monad.</p>
+<dl class="function">
+<dt id="pymonad.operators.list.ListMonad">
+<code class="descclassname">pymonad.operators.list.</code><code class="descname">ListMonad</code><span class="sig-paren">(</span><em>*elements</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.list._List[T]<a class="reference internal" href="_modules/pymonad/operators/list.html#ListMonad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.list.ListMonad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the List monad.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>elements: any number of elements to be inserted into the list</dd>
+<dt>Returns:</dt>
+<dd>An instance of the List monad.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators.maybe">
+<span id="pymonad-operators-maybe-module"></span><h2>pymonad.operators.maybe module<a class="headerlink" href="#module-pymonad.operators.maybe" title="Permalink to this headline">¶</a></h2>
+<p>Adds operators to the Maybe monad.</p>
+<dl class="function">
+<dt id="pymonad.operators.maybe.Just">
+<code class="descclassname">pymonad.operators.maybe.</code><code class="descname">Just</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/operators/maybe.html#Just"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.maybe.Just" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Maybe object representing the presence of an optional value.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymonad.operators.maybe.Maybe">
+<em class="property">class </em><code class="descclassname">pymonad.operators.maybe.</code><code class="descname">Maybe</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/operators/maybe.html#Maybe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.maybe.Maybe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.operators.operators.MonadOperators" title="pymonad.operators.operators.MonadOperators"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.operators.operators.MonadOperators</span></code></a>, <a class="reference internal" href="pymonad.html#pymonad.maybe.Maybe" title="pymonad.maybe.Maybe"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.maybe.Maybe</span></code></a></p>
+<p>See pymonad.operators.operators and pymonad.maybe.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymonad.operators.maybe.Option">
+<em class="property">class </em><code class="descclassname">pymonad.operators.maybe.</code><code class="descname">Option</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/operators/maybe.html#Option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.maybe.Option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.operators.maybe.Maybe" title="pymonad.operators.maybe.Maybe"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.operators.maybe.Maybe</span></code></a></p>
+<p>An alias for the Maybe monad class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.operators.maybe.Some">
+<code class="descclassname">pymonad.operators.maybe.</code><code class="descname">Some</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.maybe.Option[T]<a class="reference internal" href="_modules/pymonad/operators/maybe.html#Some"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.maybe.Some" title="Permalink to this definition">¶</a></dt>
+<dd><p>An Option object representing the presence of an optional value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators.operators">
+<span id="pymonad-operators-operators-module"></span><h2>pymonad.operators.operators module<a class="headerlink" href="#module-pymonad.operators.operators" title="Permalink to this headline">¶</a></h2>
+<p>Defines the monad operators.</p>
+<p>The MonadOperators class allows users to create a monad alias for
+any monad class with the operators __and__, __rmul__, and
+__rshift__ defined.</p>
+<p>Example:
+&gt;&gt;&gt; class MaybeOp(MonadOperators, Maybe):
+&gt;&gt;&gt;     pass</p>
+<p>Nothing extra needs to be implemented to get the correct behaviour
+unless the monad has multiple ‘constructors’ such as Just and
+Nothing. In this case, we need to override those constructors as well:</p>
+<p>Example:
+&gt;&gt;&gt; def Just(value):
+&gt;&gt;&gt;     return MaybeOp(value, True)
+&gt;&gt;&gt; Nothing = MaybeOp(None, False)</p>
+<dl class="class">
+<dt id="pymonad.operators.operators.MonadOperators">
+<em class="property">class </em><code class="descclassname">pymonad.operators.operators.</code><code class="descname">MonadOperators</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/operators/operators.html#MonadOperators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.operators.MonadOperators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pymonad.html#pymonad.monad.MonadAlias" title="pymonad.monad.MonadAlias"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.monad.MonadAlias</span></code></a></p>
+<p>Defines MonadOperators class.</p>
+<p>MonadOperators is a MonadAlias which is used to add operators for
+map (&lt;&lt;), amap (&amp;), bind (&gt;&gt;), and then (*) methods to Monad classes.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators.reader">
+<span id="pymonad-operators-reader-module"></span><h2>pymonad.operators.reader module<a class="headerlink" href="#module-pymonad.operators.reader" title="Permalink to this headline">¶</a></h2>
+<p>Adds operators to the Reader monad.</p>
+<dl class="function">
+<dt id="pymonad.operators.reader.Reader">
+<code class="descclassname">pymonad.operators.reader.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>function: Callable[R, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.reader._Reader[R, T]<a class="reference internal" href="_modules/pymonad/operators/reader.html#Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the Reader monad.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>function: a function which takes the read-only data as input and</dt>
+<dd>returns any appropriate type.</dd>
+</dl>
+</dd>
+<dt>Result:</dt>
+<dd>An instance of the Reader monad.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators.state">
+<span id="pymonad-operators-state-module"></span><h2>pymonad.operators.state module<a class="headerlink" href="#module-pymonad.operators.state" title="Permalink to this headline">¶</a></h2>
+<p>Adds operators to the State monad.</p>
+<dl class="function">
+<dt id="pymonad.operators.state.State">
+<code class="descclassname">pymonad.operators.state.</code><code class="descname">State</code><span class="sig-paren">(</span><em>state_function: Callable[S, Tuple[T, S]]</em><span class="sig-paren">)</span> &#x2192; pymonad.operators.state._State[S, T]<a class="reference internal" href="_modules/pymonad/operators/state.html#State"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.state.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>The State monad constructor function.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>state_function: a function with type State -&gt; (Any, State)</dd>
+<dt>Returns:</dt>
+<dd>An instance of the State monad.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators.writer">
+<span id="pymonad-operators-writer-module"></span><h2>pymonad.operators.writer module<a class="headerlink" href="#module-pymonad.operators.writer" title="Permalink to this headline">¶</a></h2>
+<p>Adds operators to the Writer monad.</p>
+<dl class="class">
+<dt id="pymonad.operators.writer.Writer">
+<em class="property">class </em><code class="descclassname">pymonad.operators.writer.</code><code class="descname">Writer</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/operators/writer.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.operators.writer.Writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.operators.operators.MonadOperators" title="pymonad.operators.operators.MonadOperators"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.operators.operators.MonadOperators</span></code></a>, <a class="reference internal" href="pymonad.html#pymonad.writer.Writer" title="pymonad.writer.Writer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.writer.Writer</span></code></a></p>
+<p>See pymonad.operators.operators and pymonad.writer.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.operators">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymonad.operators" title="Permalink to this headline">¶</a></h2>
+<p>Provides monad classes with operators.</p>
+<p>The operators module overrides all base monad types and their aliases
+with versions which support operators.</p>
+<p>The defined operators are:
+* &amp;  - amap
+* &gt;&gt; - bind
+* &lt;&lt; - map
+* *  - then</p>
+<p>Example:
+&gt;&gt;&gt; from pymonad.operators import Maybe, Just, Nothing
+&gt;&gt;&gt; from pymonad.tools import curry</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">Nothing</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Equivalent to Maybe.apply(add).to_arguments(Just(1), Just(2))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">add</span> <span class="o">&lt;&lt;</span> <span class="n">Just</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Just</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># Just 3</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Equivalent to Maybe.insert(5).bind(div(2)).bind(div(0))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Just</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">div</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">div</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># Nothing</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Alternatively, each could be written with *</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">add</span> <span class="o">*</span> <span class="n">Just</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Just</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># Just 3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">Just</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># Nothing</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pymonad.operators package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.either">pymonad.operators.either module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.list">pymonad.operators.list module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.maybe">pymonad.operators.maybe module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.operators">pymonad.operators.operators module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.reader">pymonad.operators.reader module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.state">pymonad.operators.state module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators.writer">pymonad.operators.writer module</a></li>
+<li><a class="reference internal" href="#module-pymonad.operators">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pymonad.html"
+                        title="previous chapter">pymonad package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="contributing.html"
+                        title="next chapter">Contributing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pymonad.operators.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="contributing.html" title="Contributing"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pymonad.html" title="pymonad package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pymonad</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pymonad.html" >pymonad package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Will Boxx.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

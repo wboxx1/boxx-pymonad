@@ -1,0 +1,219 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pymonad.tools &#8212; boxx-pymonad 0.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pymonad.tools</h1><div class="highlight"><pre>
+<span></span><span class="c1"># --------------------------------------------------------</span>
+<span class="c1"># (c) Copyright 2020 by Jason DeLaat.</span>
+<span class="c1"># Licensed under BSD 3-clause licence.</span>
+<span class="c1"># --------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot; The tools module contains useful functions that don&#39;t really belong anywhere else. &quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">import</span> <span class="nn">pymonad.monad</span> <span class="k">as</span> <span class="nn">monad</span>
+
+<span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+
+<span class="k">def</span> <span class="nf">_curry_helper</span><span class="p">(</span>
+    <span class="n">number_of_arguments</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">function_to_curry</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">accumulated_arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Builds a curried version of the supplied function and returns it to the caller.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        number_of_arguments: specifies how many arguments &#39;function_to_curry&#39; takes as input.</span>
+<span class="sd">        function_to_curry: a function or other callable object either built-in or user defined.</span>
+<span class="sd">        accumulated_arguments: a list containing all the arguments so</span>
+<span class="sd">            far supplied to &#39;function_to_curry&#39;. For instance, if</span>
+<span class="sd">            &#39;function_to_curry&#39; takes two arguments but has been called with</span>
+<span class="sd">            only one so far, then accumulated_arguments will contain a</span>
+<span class="sd">            single item.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A new function which may be partially applied simply by passing</span>
+<span class="sd">        the desired number of arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_curry_internal</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Handles the actual partial application of curried functions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *arguments: a variable number of arguments to be</span>
+<span class="sd">                (eventually) supplied to the wrapped function</span>
+<span class="sd">                &#39;function_to_curry&#39;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Either the result of calling the wrapped function_to_curry</span>
+<span class="sd">            with the total accumulated arguments or the result of</span>
+<span class="sd">            calling _curry_helper with the new, larger</span>
+<span class="sd">            accumulated_arguments list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_arguments</span> <span class="o">=</span> <span class="n">accumulated_arguments</span><span class="p">[:]</span>
+        <span class="n">all_arguments</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_arguments</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">number_of_arguments</span><span class="p">:</span>  <span class="c1"># pylint: disable=no-else-return</span>
+            <span class="k">return</span> <span class="n">function_to_curry</span><span class="p">(</span><span class="o">*</span><span class="n">all_arguments</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_curry_helper</span><span class="p">(</span><span class="n">number_of_arguments</span><span class="p">,</span> <span class="n">function_to_curry</span><span class="p">,</span> <span class="n">all_arguments</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_curry_internal</span>
+
+
+<span class="c1"># Use _curry_helper to define curry as itself being a curried function.</span>
+<span class="n">curry</span> <span class="o">=</span> <span class="n">_curry_helper</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">_curry_helper</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="p">[]),</span> <span class="p">[]</span>
+<span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">curry</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot; Creates a curried function from a normal function of callable object.</span>
+
+<span class="s2">The curry function is itself curried and can be partially</span>
+<span class="s2">applied. It can be used either as a normal function call or as a</span>
+<span class="s2">decorator. The required number_of_arguments parameter makes it</span>
+<span class="s2">possible to curry functions which take a variable number of</span>
+<span class="s2">arguments like the built-in &#39;map&#39; function.</span>
+
+<span class="s2">Example:</span>
+<span class="s2">&gt;&gt;&gt; curried_map = curry(2, map)</span>
+
+<span class="s2">&gt;&gt;&gt; @curry(2)</span>
+<span class="s2">&gt;&gt;&gt; def some_func(x, y, z):</span>
+<span class="s2">&gt;&gt;&gt;     return x + y - z</span>
+
+<span class="s2">Args:</span>
+<span class="s2">    number_of_arguments: The number of arguments function_to_curry</span>
+<span class="s2">    takes as input. If function_to_curry takes a variable number of</span>
+<span class="s2">    arguments, then number of curried arguments desired in the</span>
+<span class="s2">    result: function_to_curry will be called once this many</span>
+<span class="s2">    arguments have been supplied.</span>
+<span class="s2">    function_to_curry: The function that we wish to curry</span>
+
+<span class="s2">Returns:</span>
+<span class="s2">    A new function which may be partially applied simply by passing</span>
+<span class="s2">    the desired number of arguments.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="identity"><a class="viewcode-back" href="../../pymonad.html#pymonad.tools.identity">[docs]</a><span class="k">def</span> <span class="nf">identity</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Returns it&#39;s input value unchanged. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="kleisli_compose"><a class="viewcode-back" href="../../pymonad.html#pymonad.tools.kleisli_compose">[docs]</a><span class="k">def</span> <span class="nf">kleisli_compose</span><span class="p">(</span>
+    <span class="n">function_f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">R</span><span class="p">],</span> <span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">[</span><span class="n">S</span><span class="p">]],</span> <span class="n">function_g</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">R</span><span class="p">],</span> <span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot; Composes two Kleisli functions.</span>
+
+<span class="sd">    Kleisli functions are functions which take as input a &#39;bare&#39; value</span>
+<span class="sd">    and return an &#39;embellished&#39; value. For instance, if we have a</span>
+<span class="sd">    function f which maps a&#39;s to b&#39;s, it&#39;s type is:</span>
+<span class="sd">    f :: a -&gt; b</span>
+
+<span class="sd">    Then the corresponding Kleisli function, f_kleisli has the type:</span>
+<span class="sd">    f_kleisli :: a -&gt; (b, m)</span>
+
+<span class="sd">    The type (b, m) corresponds to the internal representation of the</span>
+<span class="sd">    Monad class, so in terms of pymonad, a Kleisli function is one</span>
+<span class="sd">    which maps values of type a to values of some sub-class of Monad.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; def fail_if_zero(x):</span>
+<span class="sd">    &gt;&gt;&gt;     return Nothing if x is zero else Just(x)</span>
+
+<span class="sd">    &gt;&gt;&gt; def add1(x):</span>
+<span class="sd">    &gt;&gt;&gt;     return Just(x + 1)</span>
+
+<span class="sd">    &gt;&gt;&gt; new_function = kleisli_compose(add1, fail_if_zero)</span>
+<span class="sd">    &gt;&gt;&gt; new_function(0) # returns Just(1)</span>
+<span class="sd">    &gt;&gt;&gt; new_function(-1) # returns Nothing</span>
+
+<span class="sd">    add1 and fail_if_zero are Kleisli functions and new_function is</span>
+<span class="sd">    the function which results from first performing add1 followed by</span>
+<span class="sd">    fail_if_zero.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        function_f: a function with type: a -&gt; (b, m)</span>
+<span class="sd">        function_g: a function with type: b -&gt; (c, m)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A new Kleisli function with type: a -&gt; (c, m)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">function_f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">function_g</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Will Boxx.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

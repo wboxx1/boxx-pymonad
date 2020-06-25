@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pymonad.writer &#8212; boxx-pymonad 0.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pymonad.writer</h1><div class="highlight"><pre>
+<span></span><span class="c1"># --------------------------------------------------------</span>
+<span class="c1"># (c) Copyright 2014, 2020 by Jason DeLaat.</span>
+<span class="c1"># Licensed under BSD 3-clause licence.</span>
+<span class="c1"># --------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot; Implements the Writer monad.</span>
+
+<span class="sd">The Writer monad is typically used to append information to a log. The</span>
+<span class="sd">log type is often just strings but can be any type that behaves as a</span>
+<span class="sd">monoid with a defined + (__add__) operator.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">&gt;&gt;&gt; @curry(2)</span>
+<span class="sd">&gt;&gt;&gt; def add(x, y):</span>
+<span class="sd">&gt;&gt;&gt;     return Writer(x + y, f&quot;Called function &#39;add&#39; with arguments {x} and {y}. Result: {x + y}&quot;)</span>
+
+<span class="sd">&gt;&gt;&gt; @curry(2)</span>
+<span class="sd">&gt;&gt;&gt; def mul(x, y):</span>
+<span class="sd">&gt;&gt;&gt;     return Writer(x * y, f&quot;Called function &#39;mul&#39; with arguments {x} and {y}. Result: {x * y}&quot;)</span>
+
+<span class="sd">&gt;&gt;&gt; logged_arithmetic = (Writer</span>
+<span class="sd">&gt;&gt;&gt;                      .insert(0)</span>
+<span class="sd">&gt;&gt;&gt;                      .then(add(1))</span>
+<span class="sd">&gt;&gt;&gt;                      .then(mul(2)))</span>
+
+<span class="sd">&gt;&gt;&gt; # logged_arithmetic = (2, &quot;Called function &#39;add&#39; with arguments 1 and 0. Result: 1</span>
+<span class="sd">&gt;&gt;&gt; #                     Called function &#39;mul&#39; with arguments 2 and 1. Result: 2&quot;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">import</span> <span class="nn">pymonad.monad</span>
+<span class="kn">import</span> <span class="nn">pymonad.monoid</span>
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span>
+    <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">pymonad</span><span class="o">.</span><span class="n">monoid</span><span class="o">.</span><span class="n">Monoid</span><span class="p">,</span> <span class="n">pymonad</span><span class="o">.</span><span class="n">monoid</span><span class="o">.</span><span class="n">ZERO</span>
+<span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+
+<div class="viewcode-block" id="Writer"><a class="viewcode-back" href="../../pymonad.html#pymonad.writer.Writer">[docs]</a><span class="k">class</span> <span class="nc">Writer</span><span class="p">(</span><span class="n">pymonad</span><span class="o">.</span><span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">M</span><span class="p">,</span> <span class="n">T</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; The Writer monad class. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Writer.insert"><a class="viewcode-back" href="../../pymonad.html#pymonad.writer.Writer.insert">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Writer[M, T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.insert. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Writer</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">pymonad</span><span class="o">.</span><span class="n">monoid</span><span class="o">.</span><span class="n">ZERO</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.bind"><a class="viewcode-back" href="../../pymonad.html#pymonad.writer.Writer.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;Writer[M, S]&quot;</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s2">&quot;Writer[M, T]&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Writer[M, T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.bind. &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">kleisli_function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Writer</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">monoid</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">monoid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Writer.map"><a class="viewcode-back" href="../../pymonad.html#pymonad.writer.Writer.map">[docs]</a>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;Writer[M, S]&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;Writer[M, T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.map. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Writer</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">monoid</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">monoid</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">monoid</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s2">&quot;(</span><span class="si">{self.value}</span><span class="s2">, </span><span class="si">{self.monoid}</span><span class="s2">)&quot;</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Will Boxx.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

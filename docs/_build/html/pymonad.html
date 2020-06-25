@@ -1,0 +1,1020 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pymonad package &#8212; boxx-pymonad 0.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pymonad.operators package" href="pymonad.operators.html" />
+    <link rel="prev" title="pymonad" href="modules.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymonad.operators.html" title="pymonad.operators package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="pymonad"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">pymonad</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pymonad-package">
+<h1>pymonad package<a class="headerlink" href="#pymonad-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pymonad.operators.html">pymonad.operators package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.either">pymonad.operators.either module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.list">pymonad.operators.list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.maybe">pymonad.operators.maybe module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.operators">pymonad.operators.operators module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.reader">pymonad.operators.reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.state">pymonad.operators.state module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators.writer">pymonad.operators.writer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pymonad.operators.html#module-pymonad.operators">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pymonad.either">
+<span id="pymonad-either-module"></span><h2>pymonad.either module<a class="headerlink" href="#module-pymonad.either" title="Permalink to this headline">¶</a></h2>
+<p>Implements the Either monad and related functions.</p>
+<p>The Either type represents values that can either type A or type B -
+for any types A and B - but not both at the same time. As a function
+input type, Either values can be used to define functions which can
+sensibly deal with multiple types of input; of course in python we
+don’t need a special way to deal with multiple input types.</p>
+<p>Perhaps more usefully, as an output type, Either values can be used to
+signal that a function may cause an error: Either we get back a useful
+result or we get back an error message.</p>
+<p>When creating Either values directly use the ‘Right’ or ‘Left’
+functions:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd>x = Right(19)                     # Represents a result value
+y = Left(‘Something went wrong.’) # Represents an error value</dd>
+</dl>
+</div></blockquote>
+<p>The ‘insert’ class method is a wrapper around the ‘Right’ function.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd>x = Either.insert(9) # Same as Right(9)</dd>
+</dl>
+</div></blockquote>
+<dl class="class">
+<dt id="pymonad.either.Either">
+<em class="property">class </em><code class="descclassname">pymonad.either.</code><code class="descname">Either</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/either.html#Either"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.monad.Monad" title="pymonad.monad.Monad"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.monad.Monad</span></code></a></p>
+<p>The Either monad class.</p>
+<dl class="method">
+<dt id="pymonad.either.Either.amap">
+<code class="descname">amap</code><span class="sig-paren">(</span><em>monad_value: pymonad.either.Either[M, S]</em><span class="sig-paren">)</span> &#x2192; pymonad.either.Either[M, T]<a class="reference internal" href="_modules/pymonad/either.html#Either.amap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either.amap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the function stored in the functor to the value inside ‘functor_value’
+returning a new functor value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.either.Either.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>kleisli_function: Callable[S, Either[M, T]]</em><span class="sig-paren">)</span> &#x2192; pymonad.either.Either[M, T]<a class="reference internal" href="_modules/pymonad/either.html#Either.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either.bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.bind</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymonad.either.Either.insert">
+<em class="property">classmethod </em><code class="descname">insert</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.either.Either[Any, T]<a class="reference internal" href="_modules/pymonad/either.html#Either.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.insert</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.either.Either.is_left">
+<code class="descname">is_left</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/pymonad/either.html#Either.is_left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either.is_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this Either instance was created with the ‘Left’ function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.either.Either.is_right">
+<code class="descname">is_right</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/pymonad/either.html#Either.is_right"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either.is_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this Either instance was created with the ‘Right’ function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.either.Either.map">
+<code class="descname">map</code><span class="sig-paren">(</span><em>function: Callable[S, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.either.Either[M, T]<a class="reference internal" href="_modules/pymonad/either.html#Either.map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Either.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.either.Error">
+<code class="descclassname">pymonad.either.</code><code class="descname">Error</code><span class="sig-paren">(</span><em>value: M</em><span class="sig-paren">)</span> &#x2192; pymonad.either._Error[M, Any]<a class="reference internal" href="_modules/pymonad/either.html#Error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an error value as the result of a calculation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.either.Left">
+<code class="descclassname">pymonad.either.</code><code class="descname">Left</code><span class="sig-paren">(</span><em>value: M</em><span class="sig-paren">)</span> &#x2192; pymonad.either.Either[M, Any]<a class="reference internal" href="_modules/pymonad/either.html#Left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a value of the first possible type in the Either monad.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.either.Result">
+<code class="descclassname">pymonad.either.</code><code class="descname">Result</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.either._Error[Any, T]<a class="reference internal" href="_modules/pymonad/either.html#Result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a value representing the successful result of a calculation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.either.Right">
+<code class="descclassname">pymonad.either.</code><code class="descname">Right</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.either.Either[Any, T]<a class="reference internal" href="_modules/pymonad/either.html#Right"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.either.Right" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a value of the second possible type in the Either monad.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.list">
+<span id="pymonad-list-module"></span><h2>pymonad.list module<a class="headerlink" href="#module-pymonad.list" title="Permalink to this headline">¶</a></h2>
+<p>Implements the List monad.</p>
+<p>The List monad is frequently used to represent calculations with
+non-deterministic results, that is: functions which return more than
+one (possible) result. For example, calculating how chess pieces might
+move.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">knight_move</span><span class="p">(</span><span class="n">position</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="c1"># calculates a list of every possible square a knight could move</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="c1"># to from it&#39;s current position</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="k">return</span> <span class="n">ListMonad</span><span class="p">(</span><span class="n">position_1</span><span class="p">,</span> <span class="n">position_2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">position_N</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># A list containing every square a knight could reach after 3 moves.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">three_moves</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">List</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">initial_position</span><span class="p">)</span> <span class="c1"># However positions are defined.</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">knight_move</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">knight_move</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">knight_move</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="function">
+<dt id="pymonad.list.ListMonad">
+<code class="descclassname">pymonad.list.</code><code class="descname">ListMonad</code><span class="sig-paren">(</span><em>*elements</em><span class="sig-paren">)</span> &#x2192; pymonad.list._List[T]<a class="reference internal" href="_modules/pymonad/list.html#ListMonad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.list.ListMonad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the List monad.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>elements: any number of elements to be inserted into the list</dd>
+<dt>Returns:</dt>
+<dd>An instance of the List monad.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.maybe">
+<span id="pymonad-maybe-module"></span><h2>pymonad.maybe module<a class="headerlink" href="#module-pymonad.maybe" title="Permalink to this headline">¶</a></h2>
+<p>Implements the Maybe monad and related functions.</p>
+<p>The Maybe monad is used to represent calculations that may or may not
+return a value. Alternately, if used as function inputs, Maybe values
+can be used to indicate ‘optional’ inputs, explicitly passing
+‘Nothing’ when no input is required.</p>
+<p>When creating Maybe values directly use the ‘Just’ function or ‘Nothing’:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd>x = Just(19)
+y = Just(‘A string’)
+z = Nothing</dd>
+</dl>
+</div></blockquote>
+<p>The ‘insert’ class method is a wrapper around the ‘Just’ function.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd>x = Maybe.insert(9) # Same as Just(9)</dd>
+</dl>
+</div></blockquote>
+<dl class="function">
+<dt id="pymonad.maybe.Just">
+<code class="descclassname">pymonad.maybe.</code><code class="descname">Just</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Just"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Just" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Maybe object representing the presence of an optional value.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pymonad.maybe.Maybe">
+<em class="property">class </em><code class="descclassname">pymonad.maybe.</code><code class="descname">Maybe</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/maybe.html#Maybe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.monad.Monad" title="pymonad.monad.Monad"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.monad.Monad</span></code></a></p>
+<p>The Maybe monad class.</p>
+<dl class="method">
+<dt id="pymonad.maybe.Maybe.amap">
+<code class="descname">amap</code><span class="sig-paren">(</span><em>monad_value: pymonad.maybe.Maybe[S]</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Maybe.amap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe.amap" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.amap</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.maybe.Maybe.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>kleisli_function: Callable[S, pymonad.maybe.Maybe[T]]</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Maybe.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe.bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.bind</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymonad.maybe.Maybe.insert">
+<em class="property">classmethod </em><code class="descname">insert</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Maybe.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.insert</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.maybe.Maybe.is_just">
+<code class="descname">is_just</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/pymonad/maybe.html#Maybe.is_just"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe.is_just" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the monad instance was created with the ‘Just’ function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.maybe.Maybe.is_nothing">
+<code class="descname">is_nothing</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/pymonad/maybe.html#Maybe.is_nothing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe.is_nothing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the monad instance is the ‘Nothing’ value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.maybe.Maybe.map">
+<code class="descname">map</code><span class="sig-paren">(</span><em>function: Callable[S, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Maybe[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Maybe.map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Maybe.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymonad.maybe.Option">
+<em class="property">class </em><code class="descclassname">pymonad.maybe.</code><code class="descname">Option</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/maybe.html#Option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Option" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.monad.MonadAlias" title="pymonad.monad.MonadAlias"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.monad.MonadAlias</span></code></a>, <a class="reference internal" href="#pymonad.maybe.Maybe" title="pymonad.maybe.Maybe"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.maybe.Maybe</span></code></a></p>
+<p>An alias for the Maybe monad class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.maybe.Some">
+<code class="descclassname">pymonad.maybe.</code><code class="descname">Some</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.maybe.Option[T]<a class="reference internal" href="_modules/pymonad/maybe.html#Some"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.maybe.Some" title="Permalink to this definition">¶</a></dt>
+<dd><p>An Option object representing the presence of an optional value.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.monad">
+<span id="pymonad-monad-module"></span><h2>pymonad.monad module<a class="headerlink" href="#module-pymonad.monad" title="Permalink to this headline">¶</a></h2>
+<p>Implements the Monad base class.</p>
+<p>The Monad base class is an abstract class which defines the operations
+available on all monad instances. To create a new Monad instance,
+users should create a class which inherits from Monad and provides
+implementations for the methods map, amap, bind, and class method
+insert. See the documentation for those methods for more information on
+how to implement them properly.</p>
+<dl class="class">
+<dt id="pymonad.monad.Monad">
+<em class="property">class </em><code class="descclassname">pymonad.monad.</code><code class="descname">Monad</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#Monad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.Generic</span></code></p>
+<p>Represents a “context” in which calculations can be executed.</p>
+<p>You won’t create ‘Monad’ instances directly. Instead, sub-classes implement
+specific contexts. Monads allow you to bind together a series of calculations
+while maintaining the context of that specific monad.</p>
+<dl class="method">
+<dt id="pymonad.monad.Monad.amap">
+<code class="descname">amap</code><span class="sig-paren">(</span><em>monad_value: pymonad.monad.Monad[S]</em><span class="sig-paren">)</span> &#x2192; pymonad.monad.Monad[T]<a class="reference internal" href="_modules/pymonad/monad.html#Monad.amap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad.amap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the function stored in the functor to the value inside ‘functor_value’
+returning a new functor value.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymonad.monad.Monad.apply">
+<em class="property">classmethod </em><code class="descname">apply</code><span class="sig-paren">(</span><em>function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#Monad.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supplies a cleaner interface for applicative functor/amap usage.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>function: A regular function which returns non-monadic values.</dd>
+<dt>Returns:</dt>
+<dd>A monad object based on the input class with the wrapped
+function and a new method, ‘to_arguments’ which will apply
+the function.</dd>
+</dl>
+<p>Example:
+&gt;&gt;&gt;    &#64;curry(2)
+&gt;&gt;&gt;    def add(a, b): return a + b
+&gt;&gt;&gt;
+&gt;&gt;&gt;    x = Just(1)
+&gt;&gt;&gt;    y = Just(2)
+&gt;&gt;&gt;
+&gt;&gt;&gt;    Maybe.apply(add).to_arguments(x, y)  # results in Just(3)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.monad.Monad.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>kleisli_function: Callable[S, Monad[T]]</em><span class="sig-paren">)</span> &#x2192; pymonad.monad.Monad[T]<a class="reference internal" href="_modules/pymonad/monad.html#Monad.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad.bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies ‘function’ to the result of a previous monadic calculation.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymonad.monad.Monad.insert">
+<em class="property">classmethod </em><code class="descname">insert</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.monad.Monad[T]<a class="reference internal" href="_modules/pymonad/monad.html#Monad.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of the Functor with ‘value’ in a minimum context.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.monad.Monad.map">
+<code class="descname">map</code><span class="sig-paren">(</span><em>function: Callable[S, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.monad.Monad[T]<a class="reference internal" href="_modules/pymonad/monad.html#Monad.map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies ‘function’ to the contents of the functor and returns a new functor value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.monad.Monad.then">
+<code class="descname">then</code><span class="sig-paren">(</span><em>function: Union[Callable[S, T], Callable[S, Monad[T]]]</em><span class="sig-paren">)</span> &#x2192; pymonad.monad.Monad[T]<a class="reference internal" href="_modules/pymonad/monad.html#Monad.then"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.Monad.then" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines the functionality of bind and fmap.</p>
+<p>Instead of worrying about whether to use bind or fmap,
+users can just use the then method to chain function
+calls together. The then method uses attempts to use
+bind first and if that doesn’t work, uses fmap
+instead.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>function: A python function or lambda expression</dt>
+<dd>which returns either a build-in type (int, string,
+etc.) or an appropriate monad type (Maybe, Either,
+etc.)</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>A monad value of the same type as ‘self’</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymonad.monad.MonadAlias">
+<em class="property">class </em><code class="descclassname">pymonad.monad.</code><code class="descname">MonadAlias</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.monad.Monad" title="pymonad.monad.Monad"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.monad.Monad</span></code></a></p>
+<p>Provides monad method overrides which make it easy to give a monad an alias.</p>
+<p>MonadAlias provides monad methods which call their base class but
+then re-cast the result into the alias class. This gives users a
+mechanism to give monads more semantically meaningful names
+without needing to re-implement them.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Option</span><span class="p">(</span><span class="n">MonadAlias</span><span class="p">,</span> <span class="n">Maybe</span><span class="p">):</span> <span class="c1"># MonadAlias must be the first parent class</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;Some </span><span class="si">{self.value}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">monoid</span> <span class="k">else</span> <span class="s1">&#39;Nothing&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">Some</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Option</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Nothing = Nothing, we don&#39;t need to change that one.</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<p>Functions which have been previously defined to work with the base
+type, Maybe in this case, work transparently with the aliased type
+without needing to be re-written.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add_1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Written for the Maybe monad.</span>
+</pre></div>
+</div>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">opt_val</span> <span class="o">=</span> <span class="n">Option</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">add_1</span><span class="p">)</span> <span class="c1"># Result: Some(2)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="method">
+<dt id="pymonad.monad.MonadAlias.amap">
+<code class="descname">amap</code><span class="sig-paren">(</span><em>monad_value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias.amap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias.amap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the function stored in the functor to the value inside ‘functor_value’
+returning a new functor value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.monad.MonadAlias.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>kleisli_function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias.bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies ‘function’ to the result of a previous monadic calculation.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymonad.monad.MonadAlias.insert">
+<em class="property">classmethod </em><code class="descname">insert</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of the Functor with ‘value’ in a minimum context.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.monad.MonadAlias.map">
+<code class="descname">map</code><span class="sig-paren">(</span><em>function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias.map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies ‘function’ to the contents of the functor and returns a new functor value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.monad.MonadAlias.then">
+<code class="descname">then</code><span class="sig-paren">(</span><em>function</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monad.html#MonadAlias.then"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monad.MonadAlias.then" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines the functionality of bind and fmap.</p>
+<p>Instead of worrying about whether to use bind or fmap,
+users can just use the then method to chain function
+calls together. The then method uses attempts to use
+bind first and if that doesn’t work, uses fmap
+instead.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>function: A python function or lambda expression</dt>
+<dd>which returns either a build-in type (int, string,
+etc.) or an appropriate monad type (Maybe, Either,
+etc.)</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>A monad value of the same type as ‘self’</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.monoid">
+<span id="pymonad-monoid-module"></span><h2>pymonad.monoid module<a class="headerlink" href="#module-pymonad.monoid" title="Permalink to this headline">¶</a></h2>
+<p>Implements the base Monoid type.</p>
+<p>A monoid is an algebraic structure consisting of a set of objects, S,
+such as integers; strings; etc., and an operation usually denoted as
+‘+’ which obeys the following rules:</p>
+<ol class="arabic simple">
+<li>Closure: If ‘a’ and ‘b’ are in S, then ‘a + b’ is also in S.</li>
+<li><dl class="first docutils">
+<dt>Identity: There exists an element in S (denoted 0) such that</dt>
+<dd>a + 0 = 0 + a = a</dd>
+</dl>
+</li>
+<li>Associativity: (a + b) + c = a + (b + c)</li>
+</ol>
+<p>For monoid types, the ‘+’ operation is implemented by the method
+‘mplus’ and the static method ‘mzero’ is defined to return the
+identity element of the type.</p>
+<p>For example, integers can be monoids in two ways:</p>
+<ol class="arabic simple">
+<li>mzero = 0 and mplus = addition</li>
+<li>mzero = 1 and mplus = multiplication</li>
+</ol>
+<p>String can also form a monoid where mzero is the empty string and
+mplus is concatenation.</p>
+<dl class="class">
+<dt id="pymonad.monoid.Monoid">
+<em class="property">class </em><code class="descclassname">pymonad.monoid.</code><code class="descname">Monoid</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monoid.html#Monoid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monoid.Monoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">typing.Generic</span></code></p>
+<p>Abstract base class for Monoid instances.</p>
+<p>To implement a monoid instance, users should create a sub-class of
+Monoid and implement the mzero and mplus methods. Additionally, it
+is the implementers responsibility to ensure that the
+implementation adheres to the closure, identity and associativity
+laws for monoids.</p>
+<dl class="method">
+<dt id="pymonad.monoid.Monoid.mplus">
+<code class="descname">mplus</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monoid.html#Monoid.mplus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monoid.Monoid.mplus" title="Permalink to this definition">¶</a></dt>
+<dd><p>The defining operation of the monoid. This method must be overridden in subclasses
+and should meet the following conditions:</p>
+<ol class="arabic simple">
+<li>x + 0 == 0 + x == x</li>
+<li>(x + y) + z == x + (y + z) == x + y + z</li>
+</ol>
+<p>Where ‘x’, ‘y’, and ‘z’ are monoid values, ‘0’ is the mzero (the identity value) and ‘+’
+is mplus.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pymonad.monoid.Monoid.mzero">
+<em class="property">static </em><code class="descname">mzero</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; pymonad.monoid.Monoid[Any]<a class="reference internal" href="_modules/pymonad/monoid.html#Monoid.mzero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monoid.Monoid.mzero" title="Permalink to this definition">¶</a></dt>
+<dd><p>A static method which simply returns the identity value for the monoid type.
+This method must be overridden in subclasses to create custom monoids.
+See also: the mzero function.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pymonad.monoid.ZERO">
+<em class="property">class </em><code class="descclassname">pymonad.monoid.</code><code class="descname">ZERO</code><a class="reference internal" href="_modules/pymonad/monoid.html#ZERO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monoid.ZERO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A generic zero/identity element for monoids.</p>
+<p>The ZERO class acts as a constant/singleton with monoid addition
+implemented on the class itself to always return the other
+element. It is not actually possible to create an instance of ZERO
+as calling the constructor simply returns the class itself.</p>
+<p>Example:
+&gt;&gt;&gt;    ZERO == ZERO() # True.
+&gt;&gt;&gt;    ZERO + 10      # 10
+&gt;&gt;&gt;    ‘hello’ + ZERO # ‘hello’</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.monoid.mconcat">
+<code class="descclassname">pymonad.monoid.</code><code class="descname">mconcat</code><span class="sig-paren">(</span><em>monoid_list: List[pymonad.monoid.Monoid[T]]</em><span class="sig-paren">)</span> &#x2192; pymonad.monoid.Monoid[T]<a class="reference internal" href="_modules/pymonad/monoid.html#mconcat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monoid.mconcat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of monoid values and reduces them to a single value by applying the
+mplus operation to each all elements of the list.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.monoid.mzero">
+<code class="descclassname">pymonad.monoid.</code><code class="descname">mzero</code><span class="sig-paren">(</span><em>monoid_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/monoid.html#mzero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.monoid.mzero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the identity value for monoid_type. Raises TypeError if
+monoid_type is not a valid monoid.</p>
+<p>There are a number of builtin types that can operate as monoids
+and they can be used as such as is. These “natural” monoids are:
+int, float, str, and list.  While thee mzero method will work on
+monoids derived from the Monoid class, this mzero function will
+work for <em>all</em> monoid types, including the “natural” monoids.  For
+this reason it is preferable to call this function rather than
+calling the mzero method directly unless you know for sure what
+type of monoid you’re dealing with.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.promise">
+<span id="pymonad-promise-module"></span><h2>pymonad.promise module<a class="headerlink" href="#module-pymonad.promise" title="Permalink to this headline">¶</a></h2>
+<p>Implements the Promise monad for ordering concurrent computations.</p>
+<p>The Promise monad is based on (and named after) Javascript’s Promise
+objects and function in a similar way. Promises take asynchronous
+computations and ensure the ordering of execution. In addition to the
+standard operations on monads, Promises also provide a ‘catch’ method
+which allows for recovery from errors.</p>
+<blockquote>
+<div><p>Example:
+&gt;&gt;&gt; import asyncio
+&gt;&gt;&gt; from pymonad.promise import Promise
+&gt;&gt;&gt; from pymonad.tools import curry</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">div</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">long_id</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">resolve</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">Promise</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">long_id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="n">Promise</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">long_id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">div</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>            <span class="c1"># Raises an error...</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="o">.</span><span class="n">catch</span><span class="p">(</span><span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="mi">2</span><span class="p">))</span> <span class="c1"># ...which is dealth with here.</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">await</span> <span class="n">Promise</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">to_arguments</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">catch</span><span class="p">(</span><span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="s1">&#39;Recovering...&#39;</span><span class="p">)</span> <span class="c1"># This is ignored</span>
+<span class="gp">&gt;&gt;&gt; </span>                                              <span class="c1"># because the previous</span>
+<span class="gp">&gt;&gt;&gt; </span>                                              <span class="c1"># catch already dealt</span>
+<span class="gp">&gt;&gt;&gt; </span>                                              <span class="c1"># with the error.</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The above example will print the value ‘3’ to the screen. The
+‘long_id’ coroutine is a stand-in for any async operation that may
+take some amount of time. When we await the Promise inside the print()
+call it waits for both arguments to complete before calling ‘add’ with
+the results. If the first call to ‘catch’ were removed then the error
+would propagate and be caught by the second call. The program would
+then print the string ‘Recovering…’ instead of ‘3’.</p>
+<p>You can also create a Promise by passing a function directly. This
+function takes two callbacks as input to signal a successful
+computation or a failed one.</p>
+<blockquote>
+<div><p>Example:
+&gt;&gt;&gt; import asyncio</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">resolve</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The ‘resolve’ callback can take a value of any type but the ‘reject’
+callback should always take an Exception as its argument.</p>
+<blockquote>
+<div><p>Example:
+&gt;&gt;&gt; import asyncio</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">reject</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">())))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>When run, this program will crash having raised the IndexError without
+catching it. Similarly, the catch method takes a function which
+accepts an Exception as it’s input.</p>
+<blockquote>
+<div><p>Example:
+&gt;&gt;&gt; import asyncio</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="k">await</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">reject</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span>        <span class="o">.</span><span class="n">catch</span><span class="p">(</span><span class="k">lambda</span> <span class="n">error</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">error</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This program prints “&lt;type ‘IndexError’&gt;” as its output.</p>
+<dl class="function">
+<dt id="pymonad.promise.Promise">
+<code class="descclassname">pymonad.promise.</code><code class="descname">Promise</code><span class="sig-paren">(</span><em>function: Callable[[Callable[S, T], Callable[Exception, T]], T]</em><span class="sig-paren">)</span> &#x2192; pymonad.promise._Promise[T]<a class="reference internal" href="_modules/pymonad/promise.html#Promise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.promise.Promise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a Promise object for ordering concurrent computations.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first last docutils">
+<dt>function: a function taking two callback typically called</dt>
+<dd>‘resolve’ and ‘reject’. When the computation is successful the
+value should be returned by calling resolve with the result. If
+there is an error, call ‘reject’ with an instance of the
+Exception class.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>A new Promise object.</dd>
+</dl>
+<p>Example:
+&gt;&gt;&gt; Promise(lambda resolve, reject: resolve(‘any value’))</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span>  <span class="k">def</span> <span class="nf">some_computation</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>      <span class="k">if</span> <span class="kc">True</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>          <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>      <span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>          <span class="n">reject</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Fake error.&#39;</span><span class="p">))</span> <span class="c1"># doesn&#39;t need to be returned</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">Promise</span><span class="p">(</span><span class="n">some_computation</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.reader">
+<span id="pymonad-reader-module"></span><h2>pymonad.reader module<a class="headerlink" href="#module-pymonad.reader" title="Permalink to this headline">¶</a></h2>
+<p>Implements the Reader monad.</p>
+<p>The Reader monad creates a context in which functions have access to
+an additional read-only input.</p>
+<dl class="function">
+<dt id="pymonad.reader.Compose">
+<code class="descclassname">pymonad.reader.</code><code class="descname">Compose</code><span class="sig-paren">(</span><em>function: Callable[R, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.reader._Reader[R, T]<a class="reference internal" href="_modules/pymonad/reader.html#Compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.reader.Compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the Compose monad.</p>
+<p>Compose is basically an alias for the Reader monad except with the
+insert and apply methods removed. It’s purpose is simply to
+provide a semantically meaningful monad instance to be used
+specifically for the purpose of function composition.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd><p class="first">def inc(x): return x + 1
+def dec(x): return x - 1</p>
+<dl class="docutils">
+<dt>convoluted_inc_twice = (Compose(inc)</dt>
+<dd>.then(inc)
+.then(inc)
+.then(dec))</dd>
+</dl>
+<p class="last">convoluted_inc_twice(0) # Result: 2</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Technically, ‘convoluted_inc_twice’ is an instance of the Reader
+monad but since Reader defines the __call__ method, we can treat
+it just like a function for all intents and purposes. The Compose
+monad composes functions forward. In the example, the three ‘inc’
+operations happen first and then the ‘dec’ and not vice-versa.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.reader.Pipe">
+<code class="descclassname">pymonad.reader.</code><code class="descname">Pipe</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.reader._Pipe[Any, T]<a class="reference internal" href="_modules/pymonad/reader.html#Pipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.reader.Pipe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the Pipe monad.</p>
+<p>Pipe is basically an alias for the Reader monad except with the
+insert and apply methods removed. It’s purpose is simply to
+provide a semantically meaningful monad instance to be used
+specifically for the purpose of chaining function calls by taking
+the output of one function as the input to the next.</p>
+<p>Since Pipe is a subclass of Reader it’s really building a function
+but, semantically, pipes start with some input and end with a
+result. For this reason, Pipe adds a ‘flush’ method which calls
+the composed function with dummy input (which will be ignored) and
+simply returns the embedded result. Optionally, you can instead
+use the unary ‘+’ operator instead of ‘flush’ to do the same
+thing.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Example:</dt>
+<dd><p class="first">def inc(x): return x + 1</p>
+<dl class="docutils">
+<dt>pipe_with_flush = (Pipe(0)</dt>
+<dd>.then(inc)
+.then(inc)
+.flush())</dd>
+<dt>pipe_with_plus = +(Pipe(0)</dt>
+<dd>.then(inc)
+.then(inc))</dd>
+</dl>
+<p class="last">pipe_with_flush == pipe_with_plus # True</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.reader.Reader">
+<code class="descclassname">pymonad.reader.</code><code class="descname">Reader</code><span class="sig-paren">(</span><em>function: Callable[R, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.reader._Reader[R, T]<a class="reference internal" href="_modules/pymonad/reader.html#Reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.reader.Reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of the Reader monad.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>function: a function which takes the read-only data as input and</dt>
+<dd>returns any appropriate type.</dd>
+</dl>
+</dd>
+<dt>Result:</dt>
+<dd>An instance of the Reader monad.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.state">
+<span id="pymonad-state-module"></span><h2>pymonad.state module<a class="headerlink" href="#module-pymonad.state" title="Permalink to this headline">¶</a></h2>
+<p>Implements the State monad.</p>
+<dl class="function">
+<dt id="pymonad.state.State">
+<code class="descclassname">pymonad.state.</code><code class="descname">State</code><span class="sig-paren">(</span><em>state_function: Callable[S, A]</em><span class="sig-paren">)</span> &#x2192; pymonad.state._State[S, A]<a class="reference internal" href="_modules/pymonad/state.html#State"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.state.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>The State monad constructor function.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>state_function: a function with type State -&gt; (Any, State)</dd>
+<dt>Returns:</dt>
+<dd>An instance of the State monad.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.tools">
+<span id="pymonad-tools-module"></span><h2>pymonad.tools module<a class="headerlink" href="#module-pymonad.tools" title="Permalink to this headline">¶</a></h2>
+<p>The tools module contains useful functions that don’t really belong anywhere else.</p>
+<dl class="function">
+<dt id="pymonad.tools.curry">
+<code class="descclassname">pymonad.tools.</code><code class="descname">curry</code><span class="sig-paren">(</span><em>*arguments</em><span class="sig-paren">)</span><a class="headerlink" href="#pymonad.tools.curry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a curried function from a normal function of callable object.</p>
+<p>The curry function is itself curried and can be partially
+applied. It can be used either as a normal function call or as a
+decorator. The required number_of_arguments parameter makes it
+possible to curry functions which take a variable number of
+arguments like the built-in ‘map’ function.</p>
+<p>Example:
+&gt;&gt;&gt; curried_map = curry(2, map)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">some_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">-</span> <span class="n">z</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>number_of_arguments: The number of arguments function_to_curry
+takes as input. If function_to_curry takes a variable number of
+arguments, then number of curried arguments desired in the
+result: function_to_curry will be called once this many
+arguments have been supplied.
+function_to_curry: The function that we wish to curry</dd>
+<dt>Returns:</dt>
+<dd>A new function which may be partially applied simply by passing
+the desired number of arguments.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.tools.identity">
+<code class="descclassname">pymonad.tools.</code><code class="descname">identity</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; T<a class="reference internal" href="_modules/pymonad/tools.html#identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.tools.identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns it’s input value unchanged.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pymonad.tools.kleisli_compose">
+<code class="descclassname">pymonad.tools.</code><code class="descname">kleisli_compose</code><span class="sig-paren">(</span><em>function_f: Callable[R, pymonad.monad.Monad[S]], function_g: Callable[S, pymonad.monad.Monad[T]]</em><span class="sig-paren">)</span> &#x2192; Callable[R, pymonad.monad.Monad[T]]<a class="reference internal" href="_modules/pymonad/tools.html#kleisli_compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.tools.kleisli_compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composes two Kleisli functions.</p>
+<p>Kleisli functions are functions which take as input a ‘bare’ value
+and return an ‘embellished’ value. For instance, if we have a
+function f which maps a’s to b’s, it’s type is:
+f :: a -&gt; b</p>
+<p>Then the corresponding Kleisli function, f_kleisli has the type:
+f_kleisli :: a -&gt; (b, m)</p>
+<p>The type (b, m) corresponds to the internal representation of the
+Monad class, so in terms of pymonad, a Kleisli function is one
+which maps values of type a to values of some sub-class of Monad.</p>
+<p>Example:
+&gt;&gt;&gt; def fail_if_zero(x):
+&gt;&gt;&gt;     return Nothing if x is zero else Just(x)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">add1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Just</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span> <span class="o">=</span> <span class="n">kleisli_compose</span><span class="p">(</span><span class="n">add1</span><span class="p">,</span> <span class="n">fail_if_zero</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># returns Just(1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_function</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># returns Nothing</span>
+</pre></div>
+</div>
+<p>add1 and fail_if_zero are Kleisli functions and new_function is
+the function which results from first performing add1 followed by
+fail_if_zero.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>function_f: a function with type: a -&gt; (b, m)
+function_g: a function with type: b -&gt; (c, m)</dd>
+<dt>Returns:</dt>
+<dd>A new Kleisli function with type: a -&gt; (c, m)</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad.writer">
+<span id="pymonad-writer-module"></span><h2>pymonad.writer module<a class="headerlink" href="#module-pymonad.writer" title="Permalink to this headline">¶</a></h2>
+<p>Implements the Writer monad.</p>
+<p>The Writer monad is typically used to append information to a log. The
+log type is often just strings but can be any type that behaves as a
+monoid with a defined + (__add__) operator.</p>
+<p>Example:
+&gt;&gt;&gt; &#64;curry(2)
+&gt;&gt;&gt; def add(x, y):
+&gt;&gt;&gt;     return Writer(x + y, f”Called function ‘add’ with arguments {x} and {y}. Result: {x + y}”)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@curry</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">Writer</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">f</span><span class="s2">&quot;Called function &#39;mul&#39; with arguments </span><span class="si">{x}</span><span class="s2"> and </span><span class="si">{y}</span><span class="s2">. Result: {x * y}&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logged_arithmetic</span> <span class="o">=</span> <span class="p">(</span><span class="n">Writer</span>
+<span class="gp">&gt;&gt;&gt; </span>                     <span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>                     <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span>                     <span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># logged_arithmetic = (2, &quot;Called function &#39;add&#39; with arguments 1 and 0. Result: 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#                     Called function &#39;mul&#39; with arguments 2 and 1. Result: 2&quot;)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="pymonad.writer.Writer">
+<em class="property">class </em><code class="descclassname">pymonad.writer.</code><code class="descname">Writer</code><span class="sig-paren">(</span><em>value</em>, <em>monoid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymonad/writer.html#Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.writer.Writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pymonad.monad.Monad" title="pymonad.monad.Monad"><code class="xref py py-class docutils literal notranslate"><span class="pre">pymonad.monad.Monad</span></code></a></p>
+<p>The Writer monad class.</p>
+<dl class="method">
+<dt id="pymonad.writer.Writer.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>kleisli_function: Callable[S, Writer[M, T]]</em><span class="sig-paren">)</span> &#x2192; pymonad.writer.Writer[M, T]<a class="reference internal" href="_modules/pymonad/writer.html#Writer.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.writer.Writer.bind" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.bind.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pymonad.writer.Writer.insert">
+<em class="property">classmethod </em><code class="descname">insert</code><span class="sig-paren">(</span><em>value: T</em><span class="sig-paren">)</span> &#x2192; pymonad.writer.Writer[M, T]<a class="reference internal" href="_modules/pymonad/writer.html#Writer.insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.writer.Writer.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.insert.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pymonad.writer.Writer.map">
+<code class="descname">map</code><span class="sig-paren">(</span><em>function: Callable[S, T]</em><span class="sig-paren">)</span> &#x2192; pymonad.writer.Writer[M, T]<a class="reference internal" href="_modules/pymonad/writer.html#Writer.map"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymonad.writer.Writer.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>See Monad.map.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pymonad">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pymonad" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for boxx-pymonad.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pymonad package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pymonad.either">pymonad.either module</a></li>
+<li><a class="reference internal" href="#module-pymonad.list">pymonad.list module</a></li>
+<li><a class="reference internal" href="#module-pymonad.maybe">pymonad.maybe module</a></li>
+<li><a class="reference internal" href="#module-pymonad.monad">pymonad.monad module</a></li>
+<li><a class="reference internal" href="#module-pymonad.monoid">pymonad.monoid module</a></li>
+<li><a class="reference internal" href="#module-pymonad.promise">pymonad.promise module</a></li>
+<li><a class="reference internal" href="#module-pymonad.reader">pymonad.reader module</a></li>
+<li><a class="reference internal" href="#module-pymonad.state">pymonad.state module</a></li>
+<li><a class="reference internal" href="#module-pymonad.tools">pymonad.tools module</a></li>
+<li><a class="reference internal" href="#module-pymonad.writer">pymonad.writer module</a></li>
+<li><a class="reference internal" href="#module-pymonad">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">pymonad</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pymonad.operators.html"
+                        title="next chapter">pymonad.operators package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pymonad.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pymonad.operators.html" title="pymonad.operators package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="pymonad"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pymonad</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Will Boxx.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

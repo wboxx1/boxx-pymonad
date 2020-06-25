@@ -1,0 +1,231 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pymonad.monoid &#8212; boxx-pymonad 0.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pymonad.monoid</h1><div class="highlight"><pre>
+<span></span><span class="c1"># --------------------------------------------------------</span>
+<span class="c1"># (c) Copyright 2014, 2020 by Jason DeLaat.</span>
+<span class="c1"># Licensed under BSD 3-clause licence.</span>
+<span class="c1"># --------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot; Implements the base Monoid type.</span>
+
+<span class="sd">A monoid is an algebraic structure consisting of a set of objects, S,</span>
+<span class="sd">such as integers; strings; etc., and an operation usually denoted as</span>
+<span class="sd">&#39;+&#39; which obeys the following rules:</span>
+
+<span class="sd">#. Closure: If &#39;a&#39; and &#39;b&#39; are in S, then &#39;a + b&#39; is also in S.</span>
+<span class="sd">#. Identity: There exists an element in S (denoted 0) such that</span>
+<span class="sd">    a + 0 = 0 + a = a</span>
+<span class="sd">#. Associativity: (a + b) + c = a + (b + c)</span>
+
+<span class="sd">For monoid types, the &#39;+&#39; operation is implemented by the method</span>
+<span class="sd">&#39;mplus&#39; and the static method &#39;mzero&#39; is defined to return the</span>
+<span class="sd">identity element of the type.</span>
+
+<span class="sd">For example, integers can be monoids in two ways:</span>
+
+<span class="sd">#. mzero = 0 and mplus = addition</span>
+<span class="sd">#. mzero = 1 and mplus = multiplication</span>
+
+<span class="sd">String can also form a monoid where mzero is the empty string and</span>
+<span class="sd">mplus is concatenation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">TypeVar</span>  <span class="c1"># pylint: disable=unused-import</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+
+<span class="k">class</span> <span class="nc">_MonoidZeroMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__radd__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;MZERO&quot;</span>
+
+
+<div class="viewcode-block" id="ZERO"><a class="viewcode-back" href="../../pymonad.html#pymonad.monoid.ZERO">[docs]</a><span class="k">class</span> <span class="nc">ZERO</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">_MonoidZeroMeta</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
+    <span class="sd">&quot;&quot;&quot; A generic zero/identity element for monoids.</span>
+
+<span class="sd">    The ZERO class acts as a constant/singleton with monoid addition</span>
+<span class="sd">    implemented on the class itself to always return the other</span>
+<span class="sd">    element. It is not actually possible to create an instance of ZERO</span>
+<span class="sd">    as calling the constructor simply returns the class itself.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt;    ZERO == ZERO() # True.</span>
+<span class="sd">    &gt;&gt;&gt;    ZERO + 10      # 10</span>
+<span class="sd">    &gt;&gt;&gt;    &#39;hello&#39; + ZERO # &#39;hello&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ZERO</span></div>
+
+
+<div class="viewcode-block" id="Monoid"><a class="viewcode-back" href="../../pymonad.html#pymonad.monoid.Monoid">[docs]</a><span class="k">class</span> <span class="nc">Monoid</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot; Abstract base class for Monoid instances.</span>
+
+<span class="sd">    To implement a monoid instance, users should create a sub-class of</span>
+<span class="sd">    Monoid and implement the mzero and mplus methods. Additionally, it</span>
+<span class="sd">    is the implementers responsibility to ensure that the</span>
+<span class="sd">    implementation adheres to the closure, identity and associativity</span>
+<span class="sd">    laws for monoids.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Initializes the monoid element to &#39;value&#39;.  &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;Monoid[T]&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Monoid[T]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Monoid[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; The &#39;mplus&#39; operator.  &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mplus</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;Monoid[T]&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s2">&quot;Monoid[T]&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span>
+
+<div class="viewcode-block" id="Monoid.mzero"><a class="viewcode-back" href="../../pymonad.html#pymonad.monoid.Monoid.mzero">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">mzero</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;Monoid[Any]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A static method which simply returns the identity value for the monoid type.</span>
+<span class="sd">        This method must be overridden in subclasses to create custom monoids.</span>
+<span class="sd">        See also: the mzero function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Monoid.mplus"><a class="viewcode-back" href="../../pymonad.html#pymonad.monoid.Monoid.mplus">[docs]</a>    <span class="k">def</span> <span class="nf">mplus</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The defining operation of the monoid. This method must be overridden in subclasses</span>
+<span class="sd">        and should meet the following conditions:</span>
+
+<span class="sd">        #. x + 0 == 0 + x == x</span>
+<span class="sd">        #. (x + y) + z == x + (y + z) == x + y + z</span>
+
+<span class="sd">        Where &#39;x&#39;, &#39;y&#39;, and &#39;z&#39; are monoid values, &#39;0&#39; is the mzero (the identity value) and &#39;+&#39;</span>
+<span class="sd">        is mplus.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="mzero"><a class="viewcode-back" href="../../pymonad.html#pymonad.monoid.mzero">[docs]</a><span class="k">def</span> <span class="nf">mzero</span><span class="p">(</span><span class="n">monoid_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the identity value for monoid_type. Raises TypeError if</span>
+<span class="sd">    monoid_type is not a valid monoid.</span>
+
+<span class="sd">    There are a number of builtin types that can operate as monoids</span>
+<span class="sd">    and they can be used as such as is. These &quot;natural&quot; monoids are:</span>
+<span class="sd">    int, float, str, and list.  While thee mzero method will work on</span>
+<span class="sd">    monoids derived from the Monoid class, this mzero function will</span>
+<span class="sd">    work for *all* monoid types, including the &quot;natural&quot; monoids.  For</span>
+<span class="sd">    this reason it is preferable to call this function rather than</span>
+<span class="sd">    calling the mzero method directly unless you know for sure what</span>
+<span class="sd">    type of monoid you&#39;re dealing with.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">monoid_type</span><span class="o">.</span><span class="n">mzero</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">monoid_type</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="n">monoid_type</span> <span class="o">==</span> <span class="nb">int</span>
+            <span class="ow">or</span> <span class="n">monoid_type</span> <span class="o">==</span> <span class="nb">float</span>
+        <span class="p">):</span>  <span class="c1"># pylint: disable=no-else-return</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">monoid_type</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">monoid_type</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">monoid_type</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="n">monoid_type</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">monoid_type</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is not a Monoid.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mconcat"><a class="viewcode-back" href="../../pymonad.html#pymonad.monoid.mconcat">[docs]</a><span class="k">def</span> <span class="nf">mconcat</span><span class="p">(</span><span class="n">monoid_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Monoid</span><span class="p">[</span><span class="n">T</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Monoid</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes a list of monoid values and reduces them to a single value by applying the</span>
+<span class="sd">    mplus operation to each all elements of the list.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">mzero</span><span class="p">(</span><span class="n">monoid_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">monoid_list</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Will Boxx.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

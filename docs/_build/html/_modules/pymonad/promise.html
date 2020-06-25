@@ -1,0 +1,323 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pymonad.promise &#8212; boxx-pymonad 0.2.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for pymonad.promise</h1><div class="highlight"><pre>
+<span></span><span class="c1"># --------------------------------------------------------</span>
+<span class="c1"># (c) Copyright 2020 by Jason DeLaat.</span>
+<span class="c1"># Licensed under BSD 3-clause licence.</span>
+<span class="c1"># --------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot; Implements the Promise monad for ordering concurrent computations.</span>
+
+<span class="sd">The Promise monad is based on (and named after) Javascript&#39;s Promise</span>
+<span class="sd">objects and function in a similar way. Promises take asynchronous</span>
+<span class="sd">computations and ensure the ordering of execution. In addition to the</span>
+<span class="sd">standard operations on monads, Promises also provide a &#39;catch&#39; method</span>
+<span class="sd">which allows for recovery from errors.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from pymonad.promise import Promise</span>
+<span class="sd">    &gt;&gt;&gt; from pymonad.tools import curry</span>
+
+<span class="sd">    &gt;&gt;&gt; @curry(2)</span>
+<span class="sd">    &gt;&gt;&gt; def div(y, x):</span>
+<span class="sd">    &gt;&gt;&gt;    return x / y</span>
+
+<span class="sd">    &gt;&gt;&gt; async def long_id(x):</span>
+<span class="sd">    &gt;&gt;&gt;     await asyncio.sleep(1)</span>
+<span class="sd">    &gt;&gt;&gt;     return await Promise(lambda resolve, reject: resolve(x))</span>
+
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    &gt;&gt;&gt;     x = (</span>
+<span class="sd">    &gt;&gt;&gt;         Promise.insert(1)</span>
+<span class="sd">    &gt;&gt;&gt;         .then(long_id)</span>
+<span class="sd">    &gt;&gt;&gt;     )</span>
+<span class="sd">    &gt;&gt;&gt;     y = (</span>
+<span class="sd">    &gt;&gt;&gt;         Promise</span>
+<span class="sd">    &gt;&gt;&gt;         .insert(2)</span>
+<span class="sd">    &gt;&gt;&gt;         .then(long_id)</span>
+<span class="sd">    &gt;&gt;&gt;         .then(div(0)</span>
+<span class="sd">    &gt;&gt;&gt;     )            # Raises an error...</span>
+<span class="sd">    &gt;&gt;&gt;     .catch(lambda error: 2)) # ...which is dealth with here.</span>
+<span class="sd">    &gt;&gt;&gt;     print(</span>
+<span class="sd">    &gt;&gt;&gt;         await Promise.apply(add)</span>
+<span class="sd">    &gt;&gt;&gt;         .to_arguments(x, y)</span>
+<span class="sd">    &gt;&gt;&gt;         .catch(lambda error: &#39;Recovering...&#39;) # This is ignored</span>
+<span class="sd">    &gt;&gt;&gt;                                               # because the previous</span>
+<span class="sd">    &gt;&gt;&gt;                                               # catch already dealt</span>
+<span class="sd">    &gt;&gt;&gt;                                               # with the error.</span>
+<span class="sd">    &gt;&gt;&gt;     )</span>
+
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+
+<span class="sd">The above example will print the value &#39;3&#39; to the screen. The</span>
+<span class="sd">&#39;long_id&#39; coroutine is a stand-in for any async operation that may</span>
+<span class="sd">take some amount of time. When we await the Promise inside the print()</span>
+<span class="sd">call it waits for both arguments to complete before calling &#39;add&#39; with</span>
+<span class="sd">the results. If the first call to &#39;catch&#39; were removed then the error</span>
+<span class="sd">would propagate and be caught by the second call. The program would</span>
+<span class="sd">then print the string &#39;Recovering...&#39; instead of &#39;3&#39;.</span>
+
+<span class="sd">You can also create a Promise by passing a function directly. This</span>
+<span class="sd">function takes two callbacks as input to signal a successful</span>
+<span class="sd">computation or a failed one.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+
+<span class="sd">    &gt;&gt;&gt; def main():</span>
+<span class="sd">    &gt;&gt;&gt;     print(await Promise(lambda resolve, reject: resolve(2)))</span>
+
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+
+<span class="sd">The &#39;resolve&#39; callback can take a value of any type but the &#39;reject&#39;</span>
+<span class="sd">callback should always take an Exception as its argument.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+
+<span class="sd">    &gt;&gt;&gt; def main():</span>
+<span class="sd">    &gt;&gt;&gt;     print(await Promise(lambda resolve, reject: reject(IndexError())))</span>
+
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+
+<span class="sd">When run, this program will crash having raised the IndexError without</span>
+<span class="sd">catching it. Similarly, the catch method takes a function which</span>
+<span class="sd">accepts an Exception as it&#39;s input.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+
+<span class="sd">    &gt;&gt;&gt; def main():</span>
+<span class="sd">    &gt;&gt;&gt;     print(</span>
+<span class="sd">    &gt;&gt;&gt;         await Promise(lambda resolve, reject: reject(IndexError()))</span>
+<span class="sd">    &gt;&gt;&gt;         .catch(lambda error: print(type(error)))</span>
+<span class="sd">    &gt;&gt;&gt;     )</span>
+
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+
+<span class="sd">This program prints &quot;&lt;type &#39;IndexError&#39;&gt;&quot; as its output.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">pymonad.monad</span>
+<span class="kn">import</span> <span class="nn">pymonad.tools</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+<span class="n">ResolveFunction</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span>
+<span class="n">RejectFunction</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span>
+<span class="n">PromiseFunction</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ResolveFunction</span><span class="p">,</span> <span class="n">RejectFunction</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_reject</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-else-raise</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">error</span>
+
+
+<span class="k">class</span> <span class="nc">_Promise</span><span class="p">(</span><span class="n">pymonad</span><span class="o">.</span><span class="n">monad</span><span class="o">.</span><span class="n">Monad</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">monoid</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">monoid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span> <span class="o">=</span> <span class="n">pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">identity</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.insert. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Promise</span><span class="p">(</span><span class="k">lambda</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">:</span> <span class="n">resolve</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">amap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Promise[Callable[[S], T]]&quot;</span><span class="p">,</span> <span class="n">monad_value</span><span class="p">:</span> <span class="s2">&quot;_Promise[S]&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.amap. &quot;&quot;&quot;</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_awaitable_amap</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+            <span class="n">function</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="n">monad_value</span>
+            <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">_awaitable_amap</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Promise[S]&quot;</span><span class="p">,</span> <span class="n">kleisli_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.bind. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span> <span class="o">=</span> <span class="n">kleisli_function</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_awaitable_bind</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span>
+            <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="k">await</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">_awaitable_bind</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">catch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Allows users to handle errors caused earlier in the Promise chain.</span>
+
+<span class="sd">        The catch method takes an error handling function as input. If</span>
+<span class="sd">        an earlier computation in the Promise chain has caused an</span>
+<span class="sd">        error, either by being passed an Exception via the &#39;reject&#39;</span>
+<span class="sd">        callback or by an Exception being raised normally, then error</span>
+<span class="sd">        handler is called with the Exception as an argument. If no</span>
+<span class="sd">        error was previously raised, the error handler is ignored.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            error_handler: a function which takes an Exception as input</span>
+<span class="sd">                and can return any type.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new Promise object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_awaitable_catch</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span>
+                <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pylint: disable=invalid-name, broad-except</span>
+                <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="n">error_handler</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">_awaitable_catch</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Promise[S]&quot;</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.map. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span> <span class="o">=</span> <span class="n">function</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span>
+            <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">then</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;_Promise[S]&quot;</span><span class="p">,</span>
+        <span class="n">function</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">S</span><span class="p">],</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;_Promise[T]&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; See Monad.then. &quot;&quot;&quot;</span>
+
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">_awaitable_then</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">resolve</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">_awaitable_then</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__await__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_resolve</span><span class="p">,</span> <span class="n">_reject</span><span class="p">)</span><span class="o">.</span><span class="fm">__await__</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Promise"><a class="viewcode-back" href="../../pymonad.html#pymonad.promise.Promise">[docs]</a><span class="k">def</span> <span class="nf">Promise</span><span class="p">(</span><span class="n">function</span><span class="p">:</span> <span class="n">PromiseFunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Promise</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>  <span class="c1"># pylint: disable=invalid-name</span>
+    <span class="sd">&quot;&quot;&quot; Constructs a Promise object for ordering concurrent computations.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">      function: a function taking two callback typically called</span>
+<span class="sd">        &#39;resolve&#39; and &#39;reject&#39;. When the computation is successful the</span>
+<span class="sd">        value should be returned by calling resolve with the result. If</span>
+<span class="sd">        there is an error, call &#39;reject&#39; with an instance of the</span>
+<span class="sd">        Exception class.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      A new Promise object.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    &gt;&gt;&gt; Promise(lambda resolve, reject: resolve(&#39;any value&#39;))</span>
+
+<span class="sd">    &gt;&gt;&gt;   def some_computation(resolve, reject):</span>
+<span class="sd">    &gt;&gt;&gt;       if True:</span>
+<span class="sd">    &gt;&gt;&gt;           return resolve(10)</span>
+<span class="sd">    &gt;&gt;&gt;       else:</span>
+<span class="sd">    &gt;&gt;&gt;           reject(TypeError(&#39;Fake error.&#39;)) # doesn&#39;t need to be returned</span>
+<span class="sd">    &gt;&gt;&gt;   Promise(some_computation)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@pymonad</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_awaitable</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="n">resolve</span><span class="p">,</span> <span class="n">reject</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_Promise</span><span class="p">(</span>
+        <span class="n">_awaitable</span><span class="p">(</span><span class="n">function</span><span class="p">),</span> <span class="kc">None</span>
+    <span class="p">)</span>  <span class="c1"># pylint: disable=no-value-for-parameter</span></div>
+
+
+<span class="n">Promise</span><span class="o">.</span><span class="n">apply</span> <span class="o">=</span> <span class="n">_Promise</span><span class="o">.</span><span class="n">apply</span>
+<span class="n">Promise</span><span class="o">.</span><span class="n">insert</span> <span class="o">=</span> <span class="n">_Promise</span><span class="o">.</span><span class="n">insert</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">boxx-pymonad 0.2.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Will Boxx.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>
