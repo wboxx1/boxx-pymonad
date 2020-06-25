@@ -8,18 +8,18 @@ The MonadOperators class allows users to create a monad alias for
 any monad class with the operators __and__, __rmul__, and
 __rshift__ defined.
 
-  Example:
-    class MaybeOp(MonadOperators, Maybe):
-        pass
+Example:
+>>> class MaybeOp(MonadOperators, Maybe):
+>>>     pass
 
 Nothing extra needs to be implemented to get the correct behaviour
 unless the monad has multiple 'constructors' such as Just and
 Nothing. In this case, we need to override those constructors as well:
 
-  Example:
-    def Just(value):
-        return MaybeOp(value, True)
-    Nothing = MaybeOp(None, False)
+Example:
+>>> def Just(value):
+>>>     return MaybeOp(value, True)
+>>> Nothing = MaybeOp(None, False)
 """
 import pymonad.monad
 

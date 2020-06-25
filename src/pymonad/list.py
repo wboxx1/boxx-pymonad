@@ -10,50 +10,62 @@ one (possible) result. For example, calculating how chess pieces might
 move.
 
   Example:
-    def knight_move(position):
-        # calculates a list of every possible square a knight could move
-        # to from it's current position
-        return ListMonad(position_1, position_2, ..., position_N)
+    >>> def knight_move(position):
+    >>>    # calculates a list of every possible square a knight could move
+    >>>    # to from it's current position
+    >>>    return ListMonad(position_1, position_2, ..., position_N)
 
-    # A list containing every square a knight could reach after 3 moves.
-    three_moves = (List
-                   .insert(initial_position) # However positions are defined.
-                   .then(knight_move)
-                   .then(knight_move)
-                   .then(knight_move))
+    >>> # A list containing every square a knight could reach after 3 moves.
+    >>> three_moves = (
+    >>>     List
+    >>>     .insert(initial_position) # However positions are defined.
+    >>>     .then(knight_move)
+    >>>     .then(knight_move)
+    >>>     .then(knight_move)
+    >>> )
 """
-from typing import Any, Callable, Generic, List, TypeVar, Union # pylint: disable=unused-import
+from typing import (
+    Any,
+    Callable,
+    Generic,
+    List,
+    TypeVar,
+    Union,
+)  # pylint: disable=unused-import
 
 import pymonad.monad
 
-S = TypeVar('S') # pylint: disable=invalid-name
-T = TypeVar('T') # pylint: disable=invalid-name
+S = TypeVar("S")  # pylint: disable=invalid-name
+T = TypeVar("T")  # pylint: disable=invalid-name
+
 
 class _List(pymonad.monad.Monad, Generic[T]):
     @classmethod
-    def insert(cls, value: T) -> '_List[T]':
+    def insert(cls, value: T) -> "_List[T]":
         return ListMonad(value)
 
-    def amap(self: '_List[Callable[[S], T]]', monad_value: '_List[S]') -> '_List[T]':
+    def amap(self: "_List[Callable[[S], T]]", monad_value: "_List[S]") -> "_List[T]":
         result = []
         for function in self:
             for value in monad_value:
                 result.append(function(value))
         return ListMonad(*result)
 
-    def bind(self: '_List[S]', kleisli_function: Callable[[S], '_List[T]']) -> '_List[T]':
+    def bind(
+        self: "_List[S]", kleisli_function: Callable[[S], "_List[T]"]
+    ) -> "_List[T]":
         return self.map(kleisli_function).join()
 
-    def join(self: '_List[_List[T]]') -> '_List[T]':
+    def join(self: "_List[_List[T]]") -> "_List[T]":
         """ Flattens a nested ListMonad instance one level. """
         return ListMonad(*[element for lists in self for element in lists])
 
-    def map(self: '_List[S]', function: Callable[[S], T]) -> '_List[T]':
+    def map(self: "_List[S]", function: Callable[[S], T]) -> "_List[T]":
         return ListMonad(*[function(x) for x in self])
 
     def then(
-            self: '_List[S]', function: Union[Callable[[S], T], Callable[[S], '_List[T]']]
-    ) -> '_List[T]':
+        self: "_List[S]", function: Union[Callable[[S], T], Callable[[S], "_List[T]"]]
+    ) -> "_List[T]":
         try:
             return self.bind(function)
         except TypeError:
@@ -77,17 +89,19 @@ class _List(pymonad.monad.Monad, Generic[T]):
     def __repr__(self):
         return str(self.value)
 
-def ListMonad(*elements: List[T]) -> _List[T]: # pylint: disable=invalid-name
+
+def ListMonad(*elements: List[T]) -> _List[T]:  # pylint: disable=invalid-name
     """ Creates an instance of the List monad.
 
     Args:
-      *elements: any number of elements to be inserted into the list
+        elements: any number of elements to be inserted into the list
 
     Returns:
-      An instance of the List monad.
+        An instance of the List monad.
     """
 
     return _List(list(elements), None)
+
 
 ListMonad.insert = _List.insert
 ListMonad.apply = _List.apply

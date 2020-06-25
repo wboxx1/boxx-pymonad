@@ -9,7 +9,7 @@ try:
 except:
 	from urllib.request import pathname2url
 
-webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
+webbrowser.open("file:///" + pathname2url(os.path.abspath(sys.argv[1])))
 endef
 export BROWSER_PYSCRIPT
 
@@ -68,7 +68,7 @@ coverage: ## check code coverage quickly with the default Python
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/boxx_pymonad.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ boxx_pymonad
+	sphinx-apidoc -M -o docs/ src/pymonad
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html

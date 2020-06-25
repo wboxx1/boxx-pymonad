@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = boxx_pymonad
+SPHINXPROJ    = pymonad
 SOURCEDIR     = .
 BUILDDIR      = _build
 
