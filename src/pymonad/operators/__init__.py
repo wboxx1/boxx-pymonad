@@ -8,10 +8,10 @@ The operators module overrides all base monad types and their aliases
 with versions which support operators.
 
 The defined operators are:
-    * &  - amap
-    * >> - bind
-    * << - map
-    * *  - then
+#. &  - amap
+#. >> - bind
+#. << - map
+#. *  - then
 
 Example:
     >>> from pymonad.operators import Maybe, Just, Nothing
